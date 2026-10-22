@@ -1,0 +1,19 @@
+# Node & Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables & Vercel
+.env
+.env.local
+.vercel
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System & OS
+.DS_Store
+Thumbs.db

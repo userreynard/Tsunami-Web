@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+  <title>Katalog Riwayat Tsunami - Tsunami Indonesia</title>
+  <meta name="description" content="Katalog arsip dan dokumentasi kejadian tsunami di Indonesia dan internasional dengan data tanggal kejadian lengkap, kekuatan gempa pemicu, dan ketinggian gelombang.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Bright Blue & Solid White Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#f8fafc] text-slate-800 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- ============================================================== -->
+  <!-- NAVBAR UTAMA (#0f172a - WARNA SENADA FOOTER)                   -->
+  <!-- ============================================================== -->
+  <header class="sticky top-0 z-50 bg-[#0f172a] border-b border-slate-800 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+      
+      <!-- Logo Institusional -->
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-lg text-white tracking-tight">TSUNAMI<span class="text-blue-400">.ID</span></span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Sistem Informasi &amp; Mitigasi Pesisir Indonesia</p>
+        </div>
+      </a>
+
+      <!-- Navigasi Menu Desktop -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-300">
+        <a href="index.html" class="hover:text-blue-400 transition">Beranda</a>
+        <a href="peta.html" class="hover:text-blue-400 transition">Peta Geospasial</a>
+        <a href="katalog.html" class="text-blue-400 font-bold">Katalog Kejadian</a>
+        <a href="mitigasi.html" class="hover:text-blue-400 transition">Mitigasi &amp; Edukasi</a>
+        <a href="kontak.html" class="ele-btn ele-btn-primary py-2 px-3.5 text-xs gap-1.5 shadow-xs">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+          Kontak Darurat
+        </a>
+      </nav>
+
+      <!-- Tombol Mobile Menu -->
+      <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-white">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
+    </div>
+
+    <!-- Dropdown Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-5 border-t border-slate-800 bg-[#0f172a] space-y-2 text-sm font-semibold">
+      <a href="index.html" class="block py-1.5 text-slate-200 hover:text-blue-400">Beranda</a>
+      <a href="peta.html" class="block py-1.5 text-slate-200 hover:text-blue-400">Peta Geospasial</a>
+      <a href="katalog.html" class="block py-1.5 text-blue-400 font-bold">Katalog Kejadian</a>
+      <a href="mitigasi.html" class="block py-1.5 text-slate-200 hover:text-blue-400">Mitigasi &amp; Edukasi</a>
+      <a href="kontak.html" class="block py-1.5 text-blue-400 font-bold">Layanan Darurat</a>
+    </div>
+  </header>
+
+  <!-- ============================================================== -->
+  <!-- PAGE HEADER BANNER                                             -->
+  <!-- ============================================================== -->
+  <section class="bg-blue-600 text-white py-12 border-b border-blue-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-white text-blue-700 shadow-xs mb-3">
+        Arsip Terpadu NOAA NCEI &amp; BMKG
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        Katalog Riwayat Kejadian Tsunami
+      </h1>
+      <p class="text-xs sm:text-base text-blue-100 mt-2 max-w-3xl leading-relaxed">
+        Pusat dokumentasi peristiwa tsunami di wilayah perairan Indonesia dan internasional. Dilengkapi tanggal kejadian lengkap, kekuatan gempa pemicu, estimasi tinggi gelombang, dan dampak korban jiwa.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- KATALOG KEJADIAN SECTION                                       -->
+  <!-- ============================================================== -->
+  <section class="py-12 bg-white flex-1">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Toolbar Filter & Pencarian -->
+      <div class="ele-card p-4 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50 border border-slate-200">
+        <div class="flex flex-wrap items-center gap-2">
+          <button data-region="all" class="filter-btn ele-btn bg-blue-600 text-white border-blue-600 text-xs shadow-xs">
+            Semua Kejadian
+          </button>
+          <button data-region="indonesia" class="filter-btn ele-btn bg-white text-slate-700 border-slate-300 text-xs hover:border-blue-500">
+            Wilayah Indonesia
+          </button>
+          <button data-region="international" class="filter-btn ele-btn bg-white text-slate-700 border-slate-300 text-xs hover:border-blue-500">
+            Internasional
+          </button>
+          <button data-region="high-wave" class="filter-btn ele-btn bg-white text-slate-700 border-slate-300 text-xs hover:border-blue-500">
+            Gelombang &ge; 3 Meter
+          </button>
+        </div>
+
+        <div class="relative w-full md:w-80">
+          <input type="text" id="search-input" placeholder="Cari wilayah, tanggal, tahun, atau mekanisme..." 
+                 class="ele-input w-full pl-9 pr-4 py-2 text-xs text-slate-800 placeholder-slate-400 font-medium bg-white border-slate-300 focus:border-blue-600">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+      </div>
+
+      <!-- Informasi Status Filter -->
+      <div class="mb-6 flex items-center justify-between text-xs text-slate-600">
+        <span id="search-result-count" class="font-semibold text-slate-800">Memuat data kejadian tsunami...</span>
+        <a href="peta.html" class="inline-flex items-center gap-1.5 text-blue-600 font-bold hover:underline">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+          Tampilkan Seluruh Titik di Peta &rarr;
+        </a>
+      </div>
+
+      <!-- Grid Kartu Kejadian Tsunami -->
+      <div id="event-list-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        <div class="col-span-full text-center py-20">
+          <div class="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+          <p class="text-slate-500 text-xs">Memuat katalog riwayat tsunami...</p>
+        </div>
+      </div>
+
+      <!-- Navigasi Halaman Kotak (Slide 1 2 3 4 5...) -->
+      <div id="pagination-wrapper" class="pt-4 pb-10 border-t border-slate-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <!-- Keterangan Rentang Arsip Aktif -->
+          <div id="pagination-info" class="text-xs text-slate-500 font-medium text-center sm:text-left">
+            Menampilkan data kejadian tsunami
+          </div>
+
+          <!-- Kotak Nomor Halaman (1 2 3 4 5...) -->
+          <div id="pagination-container" class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- FOOTER                                                         -->
+  <!-- ============================================================== -->
+  <footer class="bg-[#0f172a] py-8 sm:py-10 text-xs text-slate-400 border-t border-slate-800 shrink-0 safe-pb">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+          TS
+        </div>
+        <div>
+          <div class="text-white font-bold text-sm">Portal Tsunami Indonesia</div>
+          <div class="text-slate-400 text-[11px]">Sistem Informasi &amp; Pembelajaran Mitigasi Pesisir</div>
+        </div>
+      </div>
+
+      <div class="text-center md:text-right">
+        <p>Sumber Data: <a href="https://www.ngdc.noaa.gov/" target="_blank" class="text-blue-400 hover:underline">NOAA NCEI</a>, <a href="https://data.bmkg.go.id/" target="_blank" class="text-blue-400 hover:underline">BMKG InaTEWS</a> &amp; <a href="https://www.esri.com/" target="_blank" class="text-blue-400 hover:underline">Esri Topo Map</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Detail Kejadian -->
+  <div id="event-detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60">
+    <div id="modal-container" class="relative w-full max-w-lg ele-card p-6 border border-slate-200 shadow-2xl overflow-y-auto max-h-[90vh] bg-white text-slate-800">
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Database & Scripts -->
+  <script src="data/tsunamis.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
