@@ -6,6 +6,12 @@ package-lock.json
 .env
 .env.local
 .vercel
+.vercelignore
+
+# Local development server (do not deploy to Vercel)
+local-server.js
+server.js
+start_website.bat
 
 # Logs
 logs

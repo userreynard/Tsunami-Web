@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "Portal Informasi, Monitoring dan Peta Interaktif Tsunami Indonesia",
   "scripts": {
-    "build": "echo 'Static assets ready for deployment'",
-    "start": "node local-server.js",
-    "dev": "node local-server.js"
+    "build": "echo 'Static assets ready for deployment'"
   },
   "keywords": [
     "tsunami",
