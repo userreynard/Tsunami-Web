@@ -9,7 +9,7 @@ echo.
 echo Menjalankan local server dan membuka browser...
 echo.
 
-node server.js
+node local-server.js
 if %errorlevel% neq 0 (
     echo.
     echo Node server tidak dapat dijalankan, membuka index.html langsung...
