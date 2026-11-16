@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       if (height >= 5.0 || (item.deaths && item.deaths > 100)) {
         badgeClass = 'ele-badge-red';
-        badgeLabel = 'Gelombang Dahsyat (> 5m)';
+        badgeLabel = 'Gelombang Tinggi (> 5m)';
       } else if (height >= 1.0) {
         badgeClass = 'ele-badge-amber';
         badgeLabel = 'Gelombang Sedang (1-5m)';

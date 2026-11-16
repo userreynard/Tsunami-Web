@@ -17,9 +17,23 @@ module.exports = (req, res) => {
     return;
   }
 
+  // Teruskan query parameter jika ada, atau gunakan default Indonesia dari tahun 1900 ke atas
+  // (Menggunakan minYear=1900 memastikan peristiwa modern 2018 Palu, Krakatau, dll. tidak terpotong oleh batas 200 data tertua)
+  const incomingUrl = new URL(req.url || '', 'http://localhost');
+  const params = incomingUrl.searchParams;
+
+  if (!params.has('country') && !params.has('minYear')) {
+    params.set('country', 'INDONESIA');
+    params.set('minYear', '1900');
+  } else if (params.get('country') === 'INDONESIA' && !params.has('minYear') && !params.has('page')) {
+    params.set('minYear', '1900');
+  }
+
+  const targetPath = `/hazel/hazard-service/api/v1/tsunamis/events?${params.toString()}`;
+
   const options = {
     hostname: 'www.ngdc.noaa.gov',
-    path: '/hazel/hazard-service/api/v1/tsunamis/events?country=INDONESIA',
+    path: targetPath,
     headers: {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
       'Accept': 'application/json'

@@ -16,8 +16,8 @@ const API_ENDPOINTS = {
   // API Resmi BMKG Indonesia (InaTEWS)
   BMKG_AUTOGEMPA: 'https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json',
   
-  // API Tsunami Gratis NOAA
-  NOAA_INDONESIA: 'https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/tsunamis/events?country=INDONESIA',
+  // API Tsunami Gratis NOAA (gunakan minYear=1900 agar peristiwa modern 2018-sekarang tidak terpotong oleh limit paginasi)
+  NOAA_INDONESIA: 'https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/tsunamis/events?country=INDONESIA&minYear=1900',
   NOAA_GLOBAL: 'https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/tsunamis/events?minYear=2000'
 };
 
@@ -158,6 +158,7 @@ async function loadAllTsunamiEvents(onStatusUpdate) {
 
   // 2. Coba fetch API live dari NOAA (via proxy lokal atau direct)
   const candidates = [
+    API_ENDPOINTS.PROXY_NOAA + '?country=INDONESIA&minYear=1900',
     API_ENDPOINTS.PROXY_NOAA,
     API_ENDPOINTS.NOAA_INDONESIA
   ];
