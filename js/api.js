@@ -193,8 +193,12 @@ async function loadAllTsunamiEvents(onStatusUpdate) {
     }
   }
 
-  // Urutkan dari kejadian paling baru ke paling lampau
-  events.sort((a, b) => (b.year || 0) - (a.year || 0));
+  // Urutkan dari kejadian paling baru ke paling lampau (Tahun, Bulan, Hari)
+  events.sort((a, b) => {
+    if ((b.year || 0) !== (a.year || 0)) return (b.year || 0) - (a.year || 0);
+    if ((b.month || 0) !== (a.month || 0)) return (b.month || 0) - (a.month || 0);
+    return (b.day || 0) - (a.day || 0);
+  });
 
   if (onStatusUpdate) {
     onStatusUpdate({
