@@ -16,7 +16,7 @@
   <!-- Custom Bright Blue & Solid White Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-[#f8fafc] text-slate-800 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+<body class="bg-[#0b1329] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
 
   <!-- ============================================================== -->
   <!-- NAVBAR UTAMA (#0f172a - WARNA SENADA FOOTER)                   -->
@@ -70,15 +70,15 @@
   <!-- ============================================================== -->
   <!-- PAGE HEADER BANNER                                             -->
   <!-- ============================================================== -->
-  <section class="bg-blue-600 text-white py-12 border-b border-blue-700">
+  <section class="bg-[#0f172a] text-white py-10 border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-white text-blue-700 shadow-xs mb-3">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-blue-950/80 text-sky-400 border border-blue-800 shadow-xs mb-3">
         Arsip Terpadu NOAA NCEI &amp; BMKG
       </span>
       <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
         Katalog Riwayat Kejadian Tsunami
       </h1>
-      <p class="text-xs sm:text-base text-blue-100 mt-2 max-w-3xl leading-relaxed">
+      <p class="text-xs sm:text-base text-slate-400 mt-2 max-w-3xl leading-relaxed">
         Pusat dokumentasi peristiwa tsunami di wilayah perairan Indonesia dan internasional. Dilengkapi tanggal kejadian lengkap, kekuatan gempa pemicu, estimasi tinggi gelombang, dan dampak korban jiwa.
       </p>
     </div>
@@ -87,37 +87,37 @@
   <!-- ============================================================== -->
   <!-- KATALOG KEJADIAN SECTION                                       -->
   <!-- ============================================================== -->
-  <section class="py-12 bg-white flex-1">
+  <section class="py-12 bg-[#0b1329] flex-1">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Toolbar Filter & Pencarian -->
-      <div class="ele-card p-4 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50 border border-slate-200">
+      <div class="ele-card p-4 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-800/90 border border-slate-700">
         <div class="flex flex-wrap items-center gap-2">
           <button data-region="all" class="filter-btn ele-btn bg-blue-600 text-white border-blue-600 text-xs shadow-xs">
             Semua Kejadian
           </button>
-          <button data-region="indonesia" class="filter-btn ele-btn bg-white text-slate-700 border-slate-300 text-xs hover:border-blue-500">
+          <button data-region="indonesia" class="filter-btn ele-btn bg-slate-900/80 text-slate-300 border-slate-700 text-xs hover:border-sky-500 hover:text-white">
             Wilayah Indonesia
           </button>
-          <button data-region="international" class="filter-btn ele-btn bg-white text-slate-700 border-slate-300 text-xs hover:border-blue-500">
+          <button data-region="international" class="filter-btn ele-btn bg-slate-900/80 text-slate-300 border-slate-700 text-xs hover:border-sky-500 hover:text-white">
             Internasional
           </button>
-          <button data-region="high-wave" class="filter-btn ele-btn bg-white text-slate-700 border-slate-300 text-xs hover:border-blue-500">
+          <button data-region="high-wave" class="filter-btn ele-btn bg-slate-900/80 text-slate-300 border-slate-700 text-xs hover:border-sky-500 hover:text-white">
             Gelombang &ge; 3 Meter
           </button>
         </div>
 
         <div class="relative w-full md:w-80">
           <input type="text" id="search-input" placeholder="Cari wilayah, tanggal, tahun, atau mekanisme..." 
-                 class="ele-input w-full pl-9 pr-4 py-2 text-xs text-slate-800 placeholder-slate-400 font-medium bg-white border-slate-300 focus:border-blue-600">
+                 class="ele-input w-full pl-9 pr-4 py-2 text-xs text-white placeholder-slate-400 font-medium bg-slate-900 border-slate-700 focus:border-sky-500">
           <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
         </div>
       </div>
 
       <!-- Informasi Status Filter -->
-      <div class="mb-6 flex items-center justify-between text-xs text-slate-600">
-        <span id="search-result-count" class="font-semibold text-slate-800">Memuat data kejadian tsunami...</span>
-        <a href="peta.html" class="inline-flex items-center gap-1.5 text-blue-600 font-bold hover:underline">
+      <div class="mb-6 flex items-center justify-between text-xs text-slate-400">
+        <span id="search-result-count" class="font-semibold text-slate-200">Memuat data kejadian tsunami...</span>
+        <a href="peta.html" class="inline-flex items-center gap-1.5 text-sky-400 font-bold hover:underline">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
           Tampilkan Seluruh Titik di Peta &rarr;
         </a>
@@ -127,15 +127,15 @@
       <div id="event-list-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
         <div class="col-span-full text-center py-20">
           <div class="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-          <p class="text-slate-500 text-xs">Memuat katalog riwayat tsunami...</p>
+          <p class="text-slate-400 text-xs">Memuat katalog riwayat tsunami...</p>
         </div>
       </div>
 
       <!-- Navigasi Halaman Kotak (Slide 1 2 3 4 5...) -->
-      <div id="pagination-wrapper" class="pt-4 pb-10 border-t border-slate-200">
+      <div id="pagination-wrapper" class="pt-4 pb-10 border-t border-slate-800">
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
           <!-- Keterangan Rentang Arsip Aktif -->
-          <div id="pagination-info" class="text-xs text-slate-500 font-medium text-center sm:text-left">
+          <div id="pagination-info" class="text-xs text-slate-400 font-medium text-center sm:text-left">
             Menampilkan data kejadian tsunami
           </div>
 
@@ -169,8 +169,8 @@
   </footer>
 
   <!-- Modal Detail Kejadian -->
-  <div id="event-detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60">
-    <div id="modal-container" class="relative w-full max-w-lg ele-card p-6 border border-slate-200 shadow-2xl overflow-y-auto max-h-[90vh] bg-white text-slate-800">
+  <div id="event-detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
+    <div id="modal-container" class="relative w-full max-w-lg ele-card p-6 border border-slate-700 shadow-2xl overflow-y-auto max-h-[90vh] bg-slate-800 text-slate-100">
       <div id="modal-content"></div>
     </div>
   </div>

@@ -1,7 +1,8 @@
 /* ==========================================================================
-   Tsunami Indonesia - Bright Blue & Solid White Theme
-   Kombinasi: Biru Cerah (#2563eb / #1d4ed8) dan Putih Bersih (#ffffff)
-   Desain: Human-crafted, Solid, Elegan, Bebas Transparansi Murky
+   Tsunami Indonesia - Deep Oceanic & Dark Navy Theme
+   Nuansa: Biru Dongker Gelap (#0b1329 / #0f172a), Slate Navy (#1e293b),
+           Aksen Cyan / Sky Blue (#38bdf8), & Teks Kontras Bersih (#f8fafc)
+   Desain: Human-crafted, Modern Command-Center, Nyaman di Mata, Elegan
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
@@ -10,25 +11,26 @@
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Bright Blue & White Palette (Solid, Non-Transparent) */
-  --bg-page: #f8fafc;        /* Latar halaman terang bersih */
-  --bg-section-alt: #f0f6ff; /* Aksen section biru es lembut */
-  --bg-surface: #ffffff;     /* Kartu putih solid */
-  --bg-subtle: #f1f5f9;      /* Warna abu-abu slate lembut */
-  --border-color: #e2e8f0;   /* Border abu-abu bersih */
-  --border-hover: #2563eb;   /* Hover border biru cerah */
+  /* Deep Oceanic / Dark Navy Palette */
+  --bg-page: #0b1329;        /* Latar halaman deep oceanic navy */
+  --bg-section-alt: #0f172a; /* Slate 900 */
+  --bg-surface: #1e293b;     /* Slate 800 (Permukaan kartu) */
+  --bg-subtle: #0f172a;      /* Slate 900 gelap */
+  --border-color: #334155;   /* Border slate 700 */
+  --border-hover: #38bdf8;   /* Hover border cyan/sky 400 */
 
   /* Text Colors */
-  --text-main: #0f172a;      /* Teks gelap tajam (Slate 900) */
-  --text-body: #334155;      /* Teks isi mudah dibaca (Slate 700) */
-  --text-muted: #64748b;     /* Teks keterangan (Slate 500) */
+  --text-main: #f8fafc;      /* Teks putih tajam (Slate 50) */
+  --text-body: #cbd5e1;      /* Teks isi mudah dibaca (Slate 300) */
+  --text-muted: #94a3b8;     /* Teks keterangan sekunder (Slate 400) */
 
-  /* Bright Blue Accents */
-  --blue-primary: #2563eb;   /* Biru cerah (Blue 600) */
-  --blue-hover: #1d4ed8;     /* Biru cerah pekat (Blue 700) */
-  --blue-dark: #1e40af;      /* Biru institusional (Blue 800) */
-  --blue-light: #eff6ff;     /* Biru muda lembut (Blue 50) */
-  --blue-border: #bfdbfe;    /* Border biru muda (Blue 200) */
+  /* Bright Ocean Accents */
+  --blue-primary: #2563eb;   /* Blue 600 */
+  --blue-hover: #1d4ed8;     /* Blue 700 */
+  --blue-dark: #0f172a;
+  --blue-light: #1e293b;
+  --blue-border: #334155;
+  --cyan-accent: #38bdf8;    /* Aksen radar laut */
 }
 
 * {
@@ -39,6 +41,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  color-scheme: dark;
 }
 
 body {
@@ -58,9 +61,9 @@ body {
 
 .hero-section {
   position: relative;
-  background-color: #0a2554;
+  background-color: #0b1329;
   background-image: 
-    linear-gradient(180deg, rgba(7, 26, 64, 0.4) 0%, rgba(5, 20, 52, 0.2) 50%, rgba(4, 16, 42, 0.65) 100%),
+    linear-gradient(180deg, rgba(11, 19, 41, 0.75) 0%, rgba(15, 23, 42, 0.6) 50%, rgba(11, 19, 41, 0.95) 100%),
     url('../assets/hero-waves.jpg');
   background-size: cover;
   background-position: center bottom;
@@ -68,20 +71,21 @@ body {
 }
 
 /* ==========================================
-   SOLID WHITE CARD & HOVER
+   DEEP OCEANIC CARDS & HOVER
    ========================================== */
 
 .ele-card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background-color: #1e293b;
+  border: 1px solid #334155;
   border-radius: 0.875rem;
-  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  color: #f8fafc;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .ele-card-hover:hover {
-  border-color: #2563eb;
-  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.12), 0 8px 10px -6px rgba(37, 99, 235, 0.06);
+  border-color: #38bdf8;
+  box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.4);
   transform: translateY(-2px);
 }
 
@@ -104,42 +108,42 @@ body {
 .ele-btn-primary {
   background-color: #2563eb;
   color: #ffffff;
-  border: 1px solid #2563eb;
-  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+  border: 1px solid #3b82f6;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
 }
 
 .ele-btn-primary:hover {
   background-color: #1d4ed8;
-  border-color: #1d4ed8;
+  border-color: #60a5fa;
   color: #ffffff;
 }
 
 .ele-btn-secondary {
-  background-color: #ffffff;
-  color: #1e293b;
-  border: 1px solid #cbd5e1;
+  background-color: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #334155;
 }
 
 .ele-btn-secondary:hover {
-  background-color: #eff6ff;
-  border-color: #2563eb;
-  color: #2563eb;
+  background-color: #334155;
+  border-color: #38bdf8;
+  color: #38bdf8;
 }
 
 /* Input Fields */
 .ele-input {
-  background-color: #ffffff;
-  border: 1px solid #cbd5e1;
+  background-color: #0f172a;
+  border: 1px solid #334155;
   border-radius: 0.625rem;
-  color: #0f172a;
+  color: #f8fafc;
   transition: all 0.15s ease-in-out;
 }
 
 .ele-input:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-  background-color: #ffffff;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+  background-color: #0f172a;
 }
 
 /* Badges */
@@ -154,33 +158,33 @@ body {
 }
 
 .ele-badge-blue {
-  background-color: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
+  background-color: rgba(37, 99, 235, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .ele-badge-slate {
-  background-color: #f1f5f9;
-  color: #334155;
-  border: 1px solid #e2e8f0;
+  background-color: #0f172a;
+  color: #94a3b8;
+  border: 1px solid #334155;
 }
 
 .ele-badge-amber {
-  background-color: #fffbeb;
-  color: #b45309;
-  border: 1px solid #fde68a;
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .ele-badge-red {
-  background-color: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
+  background-color: rgba(220, 38, 38, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(220, 38, 38, 0.3);
 }
 
 .ele-badge-green {
-  background-color: #ecfdf5;
-  color: #047857;
-  border: 1px solid #a7f3d0;
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 /* Custom Scrollbar */
@@ -190,20 +194,20 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #0b1329;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #334155;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
+  background: #38bdf8;
 }
 
 /* ==========================================
-   LEAFLET MAP CUSTOMIZATION (CLEAN WHITE & BLUE)
+   LEAFLET MAP CUSTOMIZATION (DARK NAVY THEME)
    ========================================== */
 
 #map {
@@ -220,28 +224,51 @@ body {
 }
 
 .leaflet-container {
-  background-color: #e2e8f0 !important;
+  background-color: #0b1329 !important;
   font-family: var(--font-sans) !important;
 }
 
-/* Custom Leaflet Popup Solid White */
+/* Custom Leaflet Popup Dark Navy */
 .ele-leaflet-popup .leaflet-popup-content-wrapper {
-  background: #ffffff !important;
-  border: 1px solid #cbd5e1;
+  background: #1e293b !important;
+  border: 1px solid #334155;
   border-radius: 0.75rem;
-  color: #0f172a;
-  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.1) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6) !important;
   padding: 4px;
 }
 
 .ele-leaflet-popup .leaflet-popup-tip {
-  background: #ffffff !important;
-  border: 1px solid #cbd5e1;
+  background: #1e293b !important;
+  border: 1px solid #334155;
 }
 
 .ele-leaflet-popup .leaflet-popup-content {
   margin: 10px 12px;
   line-height: 1.5;
+}
+
+.leaflet-control-layers {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border: 1px solid #334155 !important;
+  border-radius: 0.625rem !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4) !important;
+}
+
+.leaflet-control-layers-expanded {
+  padding: 8px 12px !important;
+}
+
+.leaflet-control-zoom a {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: #334155 !important;
+  color: #38bdf8 !important;
 }
 
 .font-mono-num {
@@ -280,4 +307,3 @@ a, button, input, select {
     min-height: calc(100dvh - 65px);
   }
 }
-

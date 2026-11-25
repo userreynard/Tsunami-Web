@@ -72,30 +72,30 @@ class TsunamiMapController {
   }
 
   /**
-   * Legenda peta putih solid & biru cerah
+   * Legenda peta Deep Oceanic (Kontras Tinggi)
    */
   addLegend() {
     const legend = L.control({ position: 'bottomleft' });
 
     legend.onAdd = function () {
-      const div = L.DomUtil.create('div', 'ele-card p-3.5 rounded-xl text-xs text-slate-800 shadow-md bg-white border border-slate-200 pointer-events-auto');
+      const div = L.DomUtil.create('div', 'ele-card p-3.5 rounded-xl text-xs text-white shadow-xl bg-slate-900/95 border border-slate-700 pointer-events-auto backdrop-blur-md');
       div.innerHTML = `
-        <div class="font-bold mb-2 text-slate-900 border-b border-slate-200 pb-1.5 flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+        <div class="font-bold mb-2 text-white border-b border-slate-700 pb-1.5 flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>
           Klasifikasi Ketinggian Gelombang
         </div>
         <div class="space-y-1.5 text-[11px]">
           <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-red-600 border border-white shadow-xs"></span>
-            <span class="text-slate-700">&gt; 5.0 meter (Bencana Besar)</span>
+            <span class="text-slate-200">&gt; 5.0 meter (Bencana Besar)</span>
           </div>
           <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-amber-500 border border-white shadow-xs"></span>
-            <span class="text-slate-700">1.0 – 5.0 meter (Sedang)</span>
+            <span class="text-slate-200">1.0 – 5.0 meter (Sedang)</span>
           </div>
           <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-blue-500 border border-white shadow-xs"></span>
-            <span class="text-slate-700">&lt; 1.0 meter (Minor/Waspada)</span>
+            <span class="w-3 h-3 rounded-full bg-sky-400 border border-white shadow-xs"></span>
+            <span class="text-slate-200">&lt; 1.0 meter (Minor/Waspada)</span>
           </div>
         </div>
       `;
@@ -157,48 +157,48 @@ class TsunamiMapController {
       const formattedDate = event.fullDateIndo || event.dateString || `Tahun ${event.year}`;
 
       const popupContent = `
-        <div class="p-1 max-w-[280px] font-sans text-slate-800">
-          <div class="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-slate-200">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase ${event.isIndonesia ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-slate-100 text-slate-700 border border-slate-200'}">
+        <div class="p-1 max-w-[280px] font-sans text-slate-100">
+          <div class="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-slate-700">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase ${event.isIndonesia ? 'bg-sky-950/80 text-sky-300 border border-sky-800' : 'bg-slate-900 text-slate-300 border border-slate-700'}">
               ${event.isIndonesia ? 'Indonesia' : (event.country || 'Internasional')}
             </span>
-            <span class="text-xs font-semibold text-slate-500">
+            <span class="text-xs font-semibold text-slate-300">
               ${formattedDate}
             </span>
           </div>
 
-          <h4 class="font-bold text-sm text-slate-900 leading-snug mb-2">
+          <h4 class="font-extrabold text-sm text-white leading-snug mb-2">
             ${event.locationName}
           </h4>
 
-          <div class="grid grid-cols-2 gap-2 mb-3 bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-xs">
+          <div class="grid grid-cols-2 gap-2 mb-3 bg-slate-900/90 p-2.5 rounded-lg border border-slate-700 text-xs">
             <div>
-              <span class="text-slate-500 block text-[10px] uppercase font-semibold">Tinggi Gelombang</span>
-              <span class="font-extrabold text-blue-600 text-sm font-mono-num">
+              <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tinggi Gelombang</span>
+              <span class="font-extrabold text-sky-400 text-sm font-mono-num">
                 ${event.maxWaterHeight ? event.maxWaterHeight + ' m' : 'Tercatat'}
               </span>
             </div>
             <div>
-              <span class="text-slate-500 block text-[10px] uppercase font-semibold">Gempa Pemicu</span>
-              <span class="font-extrabold text-slate-800 text-sm font-mono-num">
+              <span class="text-slate-400 block text-[10px] uppercase font-semibold">Gempa Pemicu</span>
+              <span class="font-extrabold text-white text-sm font-mono-num">
                 ${event.magnitude ? 'M ' + event.magnitude : 'N/A'}
               </span>
             </div>
-            <div class="col-span-2 pt-1 border-t border-slate-200">
-              <span class="text-slate-500 block text-[10px] uppercase font-semibold">Mekanisme Pemicu</span>
-              <span class="text-slate-700 text-xs font-medium">
+            <div class="col-span-2 pt-1 border-t border-slate-700">
+              <span class="text-slate-400 block text-[10px] uppercase font-semibold">Mekanisme Pemicu</span>
+              <span class="text-slate-200 text-xs font-semibold">
                 ${event.causeText}
               </span>
             </div>
             ${event.deaths ? `
-              <div class="col-span-2 text-red-700 text-[11px] font-semibold bg-red-50 p-1.5 rounded border border-red-200">
+              <div class="col-span-2 text-red-200 text-[11px] font-semibold bg-red-950/80 p-1.5 rounded border border-red-700">
                 Korban Jiwa: ± ${Number(event.deaths).toLocaleString('id-ID')} jiwa
               </div>
             ` : ''}
           </div>
 
           <button onclick="window.appShowDetailModal('${event.id}')" 
-                  class="w-full py-2 px-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition shadow-xs">
+                  class="w-full py-2 px-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-sm cursor-pointer">
             <span>Rincian Kejadian</span>
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
           </button>

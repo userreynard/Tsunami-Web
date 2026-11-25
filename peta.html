@@ -20,7 +20,7 @@
   <!-- Custom Bright Blue & Solid White Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-[#f8fafc] text-slate-800 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+<body class="bg-[#0b1329] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
 
   <!-- ============================================================== -->
   <!-- NAVBAR UTAMA (#0f172a - WARNA SENADA FOOTER)                   -->
@@ -74,26 +74,26 @@
   <!-- ============================================================== -->
   <!-- PAGE HEADER BANNER                                             -->
   <!-- ============================================================== -->
-  <section class="bg-blue-600 text-white py-10 border-b border-blue-700">
+  <section class="bg-[#0f172a] text-white py-9 border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-white text-blue-700 shadow-xs mb-2">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-blue-950/80 text-sky-400 border border-blue-800 shadow-xs mb-2">
             Sistem Informasi Geografis (SIG)
           </span>
           <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Peta Geospasial Sebaran Titik Tsunami
           </h1>
-          <p class="text-xs sm:text-sm text-blue-100 mt-1 max-w-2xl">
+          <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
             Visualisasi pemetaan titik kejadian tsunami historis dan episentrum gempa bumi terkini BMKG pada perairan Indonesia dan Samudera Pasifik.
           </p>
         </div>
 
         <div class="flex items-center gap-2">
-          <button onclick="window.tsunamiMap.focusIndonesia()" class="ele-btn bg-white text-blue-700 hover:bg-blue-50 border border-white text-xs font-bold shadow-xs">
+          <button onclick="window.tsunamiMap.focusIndonesia()" class="ele-btn bg-slate-800 text-sky-400 hover:bg-slate-700 border border-slate-700 text-xs font-bold shadow-xs">
             Fokus Indonesia
           </button>
-          <button onclick="window.tsunamiMap.focusPacific()" class="ele-btn bg-white text-blue-700 hover:bg-blue-50 border border-white text-xs font-bold shadow-xs">
+          <button onclick="window.tsunamiMap.focusPacific()" class="ele-btn bg-slate-800 text-sky-400 hover:bg-slate-700 border border-slate-700 text-xs font-bold shadow-xs">
             Fokus Pasifik
           </button>
         </div>
@@ -104,50 +104,50 @@
   <!-- ============================================================== -->
   <!-- MAP SECTION (FULL VIEW)                                        -->
   <!-- ============================================================== -->
-  <section id="map-section" class="py-8 bg-white flex-1">
+  <section id="map-section" class="py-8 bg-[#0b1329] flex-1">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Banner Pemantauan BMKG -->
-      <div id="bmkg-live-card" class="mb-5 ele-card p-4 sm:p-5 bg-white text-slate-800 border border-blue-200 shadow-sm">
-        <div class="flex items-center gap-3 text-slate-600 text-sm">
-          <div class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></div>
+      <div id="bmkg-live-card" class="mb-5 ele-card p-4 sm:p-5 bg-slate-800 text-white border border-slate-700 shadow-lg">
+        <div class="flex items-center gap-3 text-slate-400 text-sm">
+          <div class="w-2.5 h-2.5 rounded-full bg-sky-400 animate-pulse"></div>
           <span>Menghubungkan ke pusat pemantauan BMKG...</span>
         </div>
       </div>
 
-      <!-- Toolbar Filter Peta (Solid Putih & Slate) -->
-      <div class="ele-card p-3 mb-4 flex flex-wrap items-center justify-between gap-3 bg-slate-50 border border-slate-200">
+      <!-- Toolbar Filter Peta (Dark Navy & Slate) -->
+      <div class="ele-card p-3 mb-4 flex flex-wrap items-center justify-between gap-3 bg-slate-800 border border-slate-700 shadow-md">
         <div class="flex flex-wrap items-center gap-2">
           <button data-region="all" class="filter-btn ele-btn bg-blue-600 text-white border-blue-600 text-xs shadow-xs">
             Semua Kejadian
           </button>
-          <button data-region="indonesia" class="filter-btn ele-btn bg-white text-slate-700 border-slate-300 text-xs hover:border-blue-500">
+          <button data-region="indonesia" class="filter-btn ele-btn bg-slate-900 text-slate-300 border-slate-700 text-xs hover:border-blue-500 hover:text-white">
             Wilayah Indonesia
           </button>
-          <button data-region="international" class="filter-btn ele-btn bg-white text-slate-700 border-slate-300 text-xs hover:border-blue-500">
+          <button data-region="international" class="filter-btn ele-btn bg-slate-900 text-slate-300 border-slate-700 text-xs hover:border-blue-500 hover:text-white">
             Internasional
           </button>
-          <button data-region="high-wave" class="filter-btn ele-btn bg-white text-slate-700 border-slate-300 text-xs hover:border-blue-500">
+          <button data-region="high-wave" class="filter-btn ele-btn bg-slate-900 text-slate-300 border-slate-700 text-xs hover:border-blue-500 hover:text-white">
             Gelombang &ge; 3 Meter
           </button>
         </div>
 
         <div class="relative w-full sm:w-72">
           <input type="text" id="search-input" placeholder="Cari wilayah, tanggal, tahun..." 
-                 class="ele-input w-full pl-8 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 font-medium bg-white border-slate-300 focus:border-blue-600">
+                 class="ele-input w-full pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-400 font-medium bg-slate-900 border-slate-700 focus:border-blue-500">
           <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
         </div>
       </div>
 
       <!-- Container Peta Layar Lebar -->
-      <div class="ele-card p-2 bg-white border border-slate-200 overflow-hidden shadow-sm">
+      <div class="ele-card p-2 bg-slate-800 border border-slate-700 overflow-hidden shadow-lg">
         <div id="map" style="height: 640px;"></div>
       </div>
 
-      <div class="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600">
-        <span id="search-result-count" class="font-medium">Memuat data geospasial...</span>
+      <div class="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-400">
+        <span id="search-result-count" class="font-medium text-slate-300">Memuat data geospasial...</span>
         <div>
-          <a href="katalog.html" class="text-blue-600 hover:underline font-bold">
+          <a href="katalog.html" class="text-sky-400 hover:underline font-bold">
             Buka Katalog Tabel Riwayat &rarr;
           </a>
         </div>
@@ -178,8 +178,8 @@
   </footer>
 
   <!-- Modal Detail Kejadian -->
-  <div id="event-detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60">
-    <div id="modal-container" class="relative w-full max-w-lg ele-card p-6 border border-slate-200 shadow-2xl overflow-y-auto max-h-[90vh] bg-white text-slate-800">
+  <div id="event-detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+    <div id="modal-container" class="relative w-full max-w-lg ele-card p-6 border border-slate-700 shadow-2xl overflow-y-auto max-h-[90vh] bg-slate-800 text-white">
       <div id="modal-content"></div>
     </div>
   </div>
