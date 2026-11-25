@@ -149,10 +149,10 @@ async function loadAllTsunamiEvents(onStatusUpdate) {
   let events = [];
   let isLive = false;
 
-  // 1. Inisialisasi awal dengan dataset terverifikasi (cepat 0ms)
+  // 1. Inisialisasi awal dengan dataset terverifikasi (hanya tsunami laut terverifikasi)
   if (window.TSUNAMI_INITIAL_DATA && Array.isArray(window.TSUNAMI_INITIAL_DATA)) {
     events = window.TSUNAMI_INITIAL_DATA
-      .filter(item => item.latitude && item.longitude)
+      .filter(item => item.latitude && item.longitude && item.oceanicTsunami !== false && (item.eventValidity === undefined || item.eventValidity >= 2))
       .map(normalizeNoaaEvent);
   }
 
@@ -175,7 +175,7 @@ async function loadAllTsunamiEvents(onStatusUpdate) {
         const noaaData = await res.json();
         if (noaaData && noaaData.items && Array.isArray(noaaData.items)) {
           const liveNormalized = noaaData.items
-            .filter(item => item.latitude && item.longitude)
+            .filter(item => item.latitude && item.longitude && item.oceanicTsunami !== false && (item.eventValidity === undefined || item.eventValidity >= 2))
             .map(normalizeNoaaEvent);
 
           // Gabungkan tanpa duplikasi ID
