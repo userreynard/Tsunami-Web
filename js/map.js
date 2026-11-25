@@ -97,10 +97,6 @@ class TsunamiMapController {
             <span class="w-3 h-3 rounded-full bg-blue-500 border border-white shadow-xs"></span>
             <span class="text-slate-700">&lt; 1.0 meter (Minor/Waspada)</span>
           </div>
-          <div class="flex items-center gap-2 pt-1.5 border-t border-slate-200">
-            <span class="w-3 h-3 rounded-full bg-blue-600 border border-white animate-pulse"></span>
-            <span class="font-bold text-blue-600">Episentrum Gempa BMKG</span>
-          </div>
         </div>
       `;
       return div;
@@ -229,24 +225,34 @@ class TsunamiMapController {
   }
 
   /**
-   * Menampilkan titik episentrum gempa BMKG terkini
+   * Menampilkan titik jika BMKG merilis peringatan dini potensi tsunami
    */
   setBmkgMarker(gempaData) {
+    if (this.bmkgMarker) {
+      this.map.removeLayer(this.bmkgMarker);
+      this.bmkgMarker = null;
+    }
+
     if (!gempaData || !gempaData.Coordinates) return;
+
+    // Saring: Hanya masukkan titik ke peta jika berpotensi tsunami
+    const isTsunamiWarning = (gempaData.Potensi || '').toLowerCase().includes('berpotensi tsunami') && 
+                             !(gempaData.Potensi || '').toLowerCase().includes('tidak berpotensi');
+
+    // Jika gempa bumi biasa (tidak berpotensi tsunami), titik tidak dimasukkan ke peta
+    if (!isTsunamiWarning) {
+      return;
+    }
 
     const [lat, lng] = gempaData.Coordinates.split(',').map(Number);
     if (isNaN(lat) || isNaN(lng)) return;
-
-    if (this.bmkgMarker) {
-      this.map.removeLayer(this.bmkgMarker);
-    }
 
     const pulseIcon = L.divIcon({
       className: 'relative flex items-center justify-center',
       html: `
         <div class="relative w-8 h-8 flex items-center justify-center">
-          <div class="absolute w-8 h-8 rounded-full bg-blue-600/30 animate-ping"></div>
-          <div class="absolute w-4 h-4 rounded-full bg-blue-600 border-2 border-white shadow-md"></div>
+          <div class="absolute w-8 h-8 rounded-full bg-red-600/30 animate-ping"></div>
+          <div class="absolute w-4 h-4 rounded-full bg-red-600 border-2 border-white shadow-md"></div>
         </div>
       `,
       iconSize: [32, 32],
@@ -255,21 +261,18 @@ class TsunamiMapController {
 
     this.bmkgMarker = L.marker([lat, lng], { icon: pulseIcon }).addTo(this.map);
 
-    const isTsunamiWarning = (gempaData.Potensi || '').toLowerCase().includes('berpotensi tsunami') && 
-                             !(gempaData.Potensi || '').toLowerCase().includes('tidak berpotensi');
-
     const bmkgPopup = `
       <div class="p-1.5 max-w-[280px] font-sans text-slate-800">
-        <div class="flex items-center gap-1.5 text-xs font-bold text-blue-600 mb-1">
-          <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-          Pusat Gempa Terkini (BMKG InaTEWS)
+        <div class="flex items-center gap-1.5 text-xs font-bold text-red-600 mb-1">
+          <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+          Peringatan Potensi Tsunami (BMKG InaTEWS)
         </div>
         <h4 class="font-extrabold text-slate-900 text-sm mb-1">${gempaData.Wilayah}</h4>
         <div class="text-xs space-y-1 mb-2 text-slate-600">
           <div>Waktu: <b class="text-slate-800">${gempaData.Tanggal} ${gempaData.Jam}</b></div>
-          <div>Magnitudo: <b class="text-blue-600 font-mono font-bold">M ${gempaData.Magnitude}</b> | Kedalaman: <b class="text-slate-800">${gempaData.Kedalaman}</b></div>
+          <div>Parameter: <b class="text-red-600 font-mono font-bold">M ${gempaData.Magnitude}</b> | Kedalaman: <b class="text-slate-800">${gempaData.Kedalaman}</b></div>
         </div>
-        <div class="p-2 rounded-md text-xs font-semibold ${isTsunamiWarning ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}">
+        <div class="p-2 rounded-md text-xs font-semibold bg-red-50 text-red-700 border border-red-200">
           ${gempaData.Potensi}
         </div>
       </div>
@@ -292,18 +295,20 @@ class TsunamiMapController {
   }
 
   flyToBmkg(lat, lng, zoom = 7) {
+    if (!this.bmkgMarker) {
+      this.focusIndonesia();
+      return;
+    }
     if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
       this.focusIndonesia();
       return;
     }
     this.map.flyTo([lat, lng], zoom, { duration: 1.2 });
-    if (this.bmkgMarker) {
-      setTimeout(() => {
-        try {
-          this.bmkgMarker.openPopup();
-        } catch (e) {}
-      }, 600);
-    }
+    setTimeout(() => {
+      try {
+        this.bmkgMarker.openPopup();
+      } catch (e) {}
+    }, 600);
   }
 
   openEventPopup(id) {
