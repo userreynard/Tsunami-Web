@@ -15,7 +15,7 @@ Dokumentasi teknis arsitektur, integrasi antarmuka pemrograman aplikasi (API), b
 
 * **Penyedia:** Badan Meteorologi, Klimatologi, dan Geofisika (BMKG)
 * **Kategori:** Data Terbuka / Pemantauan Gempa dan Peringatan Dini Tsunami
-* **Endpoint Asli:** `https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json`
+* **Endpoint Asli:** `https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json` 
 * **Proxy Internal:** `/api/bmkg`
 * **Metode HTTP:** `GET`
 * **Frekuensi Pembaruan:** Waktu nyata (diperbarui otomatis setiap terjadi gempa bumi signifikan bermagnitudo 5.0 ke atas atau gempa berpotensi dirasakan)

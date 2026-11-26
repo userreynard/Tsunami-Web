@@ -14,6 +14,8 @@ class TsunamiMapController {
     this.allEvents = [];
     this.filteredEvents = [];
     this.markersById = new Map();
+    this.userMarker = null;
+    this.distanceLine = null;
   }
 
   /**
@@ -408,6 +410,62 @@ class TsunamiMapController {
         } catch (e) {}
       }, 600);
     }
+  }
+  /**
+   * Menampilkan posisi pengguna dan garis ukur jarak langsung ke episentrum BMKG
+   */
+  showUserDistance(userLat, userLng, bmkgLat, bmkgLng, distKm) {
+    if (!this.map) return;
+
+    if (this.userMarker) {
+      this.map.removeLayer(this.userMarker);
+      this.userMarker = null;
+    }
+    if (this.distanceLine) {
+      this.map.removeLayer(this.distanceLine);
+      this.distanceLine = null;
+    }
+
+    const userIcon = L.divIcon({
+      className: 'relative flex items-center justify-center',
+      html: `
+        <div class="relative w-8 h-8 flex items-center justify-center">
+          <div class="absolute w-8 h-8 rounded-full bg-emerald-500/40 animate-ping"></div>
+          <div class="absolute w-4 h-4 rounded-full bg-emerald-500 border-2 border-white shadow-md"></div>
+        </div>
+      `,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
+    });
+
+    this.userMarker = L.marker([userLat, userLng], { icon: userIcon }).addTo(this.map);
+    this.userMarker.bindPopup(`
+      <div class="p-1 font-sans text-xs text-slate-100 max-w-[240px]">
+        <div class="font-bold text-emerald-400 mb-1 border-b border-slate-700 pb-1 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          Lokasi Anda Terdeteksi
+        </div>
+        <p class="text-slate-300">
+          Jarak ke pusat gempa BMKG: <strong class="text-white font-mono font-bold">${distKm ? distKm.toLocaleString('id-ID') + ' km' : 'Terdeteksi'}</strong>
+        </p>
+      </div>
+    `, { className: 'ele-leaflet-popup' });
+
+    this.distanceLine = L.polyline([[userLat, userLng], [bmkgLat, bmkgLng]], {
+      color: '#38bdf8',
+      weight: 2.5,
+      dashArray: '6, 8',
+      opacity: 0.95
+    }).addTo(this.map);
+
+    const bounds = L.latLngBounds([[userLat, userLng], [bmkgLat, bmkgLng]]);
+    this.map.fitBounds(bounds, { padding: [50, 50], maxZoom: 8 });
+
+    setTimeout(() => {
+      try {
+        if (this.userMarker) this.userMarker.openPopup();
+      } catch (e) {}
+    }, 600);
   }
 }
 

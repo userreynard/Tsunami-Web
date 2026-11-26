@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     events: [],
     filteredEvents: [],
     bmkgAlert: null,
+    userLocation: null,
     activeRegionFilter: 'all',
     searchQuery: '',
     pageSize: 9,
@@ -141,6 +142,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
 
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full lg:w-auto shrink-0 mt-1 lg:mt-0">
+          <button id="btn-check-distance" onclick="window.appCheckUserDistance()" class="ele-btn ele-btn-secondary w-full sm:w-auto flex-1 md:flex-initial text-xs gap-1.5 cursor-pointer shadow-xs justify-center min-h-[40px]">
+            <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <span id="btn-check-distance-text">Cek Jarak Saya</span>
+          </button>
           <button onclick="window.appFocusBmkgGempa()" class="ele-btn ele-btn-secondary w-full sm:w-auto flex-1 md:flex-initial text-xs gap-1.5 cursor-pointer shadow-xs justify-center min-h-[40px]">
             <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
             Tinjau di Peta
@@ -150,6 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </a>
         </div>
       </div>
+      <div id="bmkg-distance-panel" class="hidden mt-3"></div>
       ${evalResult.isPotential ? `
         <div class="mt-3 p-2.5 rounded-lg bg-red-950/80 border border-red-600 text-xs text-red-200 font-semibold flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div>
@@ -610,6 +616,106 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   };
 
+  // ==========================================
+  // 11. FITUR GEOLOKASI: CEK JARAK KE EPISENTRUM BMKG
+  // ==========================================
+  function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius bumi dalam kilometer
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return Math.round(R * c);
+  }
+
+  window.appCheckUserDistance = function () {
+    const btnText = document.getElementById('btn-check-distance-text');
+    const panel = document.getElementById('bmkg-distance-panel');
+
+    if (!state.bmkgAlert || !state.bmkgAlert.Coordinates) {
+      alert('Data koordinat gempa BMKG belum tersedia saat ini.');
+      return;
+    }
+
+    if (!navigator.geolocation) {
+      alert('Perangkat atau browser Anda tidak mendukung fitur deteksi lokasi (Geolocation).');
+      return;
+    }
+
+    if (btnText) btnText.textContent = 'Mendeteksi GPS...';
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        const parts = state.bmkgAlert.Coordinates.split(',');
+        const bmkgLat = parseFloat(parts[0]);
+        const bmkgLng = parseFloat(parts[1]);
+
+        if (isNaN(bmkgLat) || isNaN(bmkgLng)) {
+          if (btnText) btnText.textContent = 'Cek Jarak Saya';
+          return;
+        }
+
+        const distKm = calculateHaversineDistance(userLat, userLng, bmkgLat, bmkgLng);
+        state.userLocation = { lat: userLat, lng: userLng, distKm, bmkgLat, bmkgLng };
+
+        if (btnText) btnText.textContent = `${distKm.toLocaleString('id-ID')} km dari Anda`;
+
+        if (panel) {
+          panel.classList.remove('hidden');
+          panel.innerHTML = `
+            <div class="p-3 rounded-lg bg-slate-900/95 border border-slate-700 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
+              <div class="flex items-center gap-2.5">
+                <span class="w-2.5 h-2.5 rounded-full ${distKm <= 100 ? 'bg-red-500 animate-ping' : distKm <= 300 ? 'bg-amber-400' : 'bg-emerald-400'} shrink-0"></span>
+                <span class="text-slate-200">
+                  Posisi Anda berjarak <strong class="text-sky-300 font-mono font-bold text-sm">${distKm.toLocaleString('id-ID')} km</strong> dari episentrum gempa.
+                </span>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                <span class="px-2.5 py-0.5 rounded text-[11px] font-bold ${distKm <= 100 ? 'bg-red-950 text-red-300 border border-red-700' : distKm <= 300 ? 'bg-amber-950 text-amber-300 border border-amber-700' : 'bg-emerald-950 text-emerald-300 border border-emerald-700'}">
+                  ${distKm <= 100 ? 'Radius Kritis (< 100 km)' : distKm <= 300 ? 'Radius Menengah (100–300 km)' : 'Radius Jauh (> 300 km)'}
+                </span>
+                <button onclick="window.appViewDistanceOnMap()" class="ele-btn ele-btn-primary px-3 py-1.5 text-[11px] font-bold gap-1 cursor-pointer">
+                  Lihat Garis Jarak di Peta &rarr;
+                </button>
+              </div>
+            </div>
+          `;
+        }
+      },
+      (error) => {
+        if (btnText) btnText.textContent = 'Cek Jarak Saya';
+        let msg = 'Gagal mendeteksi lokasi GPS.';
+        if (error.code === error.PERMISSION_DENIED) {
+          msg = 'Izin akses lokasi ditolak oleh browser. Silakan izinkan akses lokasi untuk mengukur jarak ke episentrum.';
+        } else if (error.code === error.TIMEOUT) {
+          msg = 'Waktu permintaan lokasi GPS habis. Silakan coba kembali.';
+        }
+        alert(msg);
+      },
+      { enableHighAccuracy: true, timeout: 8000 }
+    );
+  };
+
+  window.appViewDistanceOnMap = function () {
+    if (!state.userLocation) {
+      window.appCheckUserDistance();
+      return;
+    }
+    const { lat, lng, distKm, bmkgLat, bmkgLng } = state.userLocation;
+    const mapSection = document.getElementById('map-section');
+    if (mapSection && mapController) {
+      mapSection.scrollIntoView({ behavior: 'smooth' });
+      mapController.showUserDistance(lat, lng, bmkgLat, bmkgLng, distKm);
+    } else {
+      window.location.href = `peta.html?userLat=${lat}&userLng=${lng}&distKm=${distKm}&focus=distance`;
+    }
+  };
+
   function handleUrlParameters() {
     if (!mapController) return;
 
@@ -617,8 +723,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const focusType = urlParams.get('focus');
     const targetLat = parseFloat(urlParams.get('lat'));
     const targetLng = parseFloat(urlParams.get('lng'));
+    const userLat = parseFloat(urlParams.get('userLat'));
+    const userLng = parseFloat(urlParams.get('userLng'));
+    const distKm = parseFloat(urlParams.get('distKm'));
 
-    if (focusType === 'bmkg' && state.bmkgAlert && state.bmkgAlert.Coordinates) {
+    if (focusType === 'distance' && !isNaN(userLat) && !isNaN(userLng) && state.bmkgAlert && state.bmkgAlert.Coordinates) {
+      const parts = state.bmkgAlert.Coordinates.split(',');
+      const bmkgLat = parseFloat(parts[0]);
+      const bmkgLng = parseFloat(parts[1]);
+      if (!isNaN(bmkgLat) && !isNaN(bmkgLng)) {
+        setTimeout(() => {
+          mapController.showUserDistance(userLat, userLng, bmkgLat, bmkgLng, distKm);
+        }, 500);
+      }
+    } else if (focusType === 'bmkg' && state.bmkgAlert && state.bmkgAlert.Coordinates) {
       const parts = state.bmkgAlert.Coordinates.split(',');
       const lat = parseFloat(parts[0]);
       const lng = parseFloat(parts[1]);
@@ -644,6 +762,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (mobileMenuBtn && mobileMenu) {
     mobileMenuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
+    });
+  }
+
+  // Registrasi Progressive Web App (PWA) Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => {
+          console.log('Tsunami.ID PWA ServiceWorker aktif:', reg.scope);
+        })
+        .catch((err) => {
+          console.warn('PWA ServiceWorker error:', err.message);
+        });
     });
   }
 });

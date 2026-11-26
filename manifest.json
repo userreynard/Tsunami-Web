@@ -1,0 +1,31 @@
+{
+  "name": "Tsunami Indonesia - Sistem Informasi & Mitigasi Pesisir",
+  "short_name": "Tsunami.ID",
+  "description": "Portal pemantauan tsunami live BMKG InaTEWS, katalog riwayat tsunami, dan pedoman mitigasi bencana pesisir.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b1329",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon-wave.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
