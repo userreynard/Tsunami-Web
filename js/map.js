@@ -10,6 +10,8 @@ class TsunamiMapController {
     this.containerId = mapContainerId;
     this.map = null;
     this.markersLayer = null;
+    this.hazardZonesLayer = null;
+    this.shelterLayer = null;
     this.bmkgMarker = null;
     this.allEvents = [];
     this.filteredEvents = [];
@@ -55,13 +57,21 @@ class TsunamiMapController {
 
     topoTile.addTo(this.map);
 
+    this.markersLayer = L.layerGroup().addTo(this.map);
+    this.hazardZonesLayer = L.layerGroup().addTo(this.map);
+    this.shelterLayer = L.layerGroup().addTo(this.map);
+
     L.control.layers({
       'Peta Topografi Alami': topoTile,
       'Peta Wilayah': streetTile,
       'Citra Satelit': satTile
-    }, null, { position: 'topright' }).addTo(this.map);
+    }, {
+      'Titik Kejadian Tsunami': this.markersLayer,
+      'Tempat Evakuasi Sementara (TES)': this.shelterLayer,
+      'Zona Kerentanan Pesisir (InaRISK)': this.hazardZonesLayer
+    }, { position: 'topright' }).addTo(this.map);
 
-    this.markersLayer = L.layerGroup().addTo(this.map);
+    this.initHazardAndShelters();
     this.addLegend();
 
     setTimeout(() => {
@@ -100,11 +110,138 @@ class TsunamiMapController {
             <span class="text-slate-200">&lt; 1.0 meter (Minor/Waspada)</span>
           </div>
         </div>
+        <div class="mt-2.5 pt-2 border-t border-slate-700/80 space-y-1.5 text-[11px]">
+          <div class="flex items-center gap-2">
+            <span class="w-3.5 h-3.5 rounded bg-emerald-600 border border-emerald-300 flex items-center justify-center text-[9px] font-bold text-white shadow-xs">T</span>
+            <span class="text-slate-200">Tempat Evakuasi Sementara (TES)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-4 h-1 border-t-2 border-dashed border-red-500"></span>
+            <span class="text-slate-200">Zona Kerentanan Pesisir (InaRISK)</span>
+          </div>
+        </div>
       `;
       return div;
     };
 
     legend.addTo(this.map);
+  }
+
+  /**
+   * Menginisialisasi dan merender Layer Zona Risiko InaRISK & Shelter TES
+   */
+  initHazardAndShelters() {
+    if (!window.TSUNAMI_HAZARD_DATA) return;
+
+    // 1. Render Tempat Evakuasi Sementara (TES)
+    if (window.TSUNAMI_HAZARD_DATA.shelters && this.shelterLayer) {
+      this.shelterLayer.clearLayers();
+      const shelterIcon = L.divIcon({
+        className: 'relative flex items-center justify-center',
+        html: `
+          <div class="w-7 h-7 rounded-lg bg-emerald-600/90 border-2 border-emerald-300 shadow-md flex items-center justify-center text-white hover:scale-110 transition-transform">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          </div>
+        `,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
+      });
+
+      window.TSUNAMI_HAZARD_DATA.shelters.forEach(tes => {
+        const marker = L.marker([tes.lat, tes.lng], { icon: shelterIcon });
+        const facilitiesList = tes.facilities.map(f => `<span class="bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded border border-slate-700">${f}</span>`).join('');
+        const popupContent = `
+          <div class="p-1 font-sans text-xs text-slate-100 max-w-[280px]">
+            <div class="inline-block px-2 py-0.5 mb-1.5 rounded text-[10px] font-extrabold bg-emerald-950 text-emerald-300 border border-emerald-700">
+              TEMPAT EVAKUASI SEMENTARA (TES)
+            </div>
+            <h4 class="font-extrabold text-white text-sm mb-1">${tes.name}</h4>
+            <div class="text-[11px] text-slate-300 mb-2">${tes.city}, ${tes.province}</div>
+            <div class="space-y-1 text-[11px] bg-slate-900/90 p-2 rounded-lg border border-slate-700 mb-2">
+              <div>Kapasitas: <b class="text-emerald-400 font-bold">${tes.capacity}</b></div>
+              <div>Elevasi Bangunan: <b class="text-sky-300">${tes.elevation}</b></div>
+              <div>Jarak dari Pantai: <b class="text-slate-200">${tes.distanceToCoast}</b></div>
+            </div>
+            <div class="text-[10px] text-slate-400 mb-2">
+              <strong class="text-slate-300 block mb-1">Fasilitas Darurat:</strong>
+              <div class="flex flex-wrap gap-1">${facilitiesList}</div>
+            </div>
+            <div class="text-[10px] text-slate-400 italic border-t border-slate-800 pt-1.5">
+              Alamat: ${tes.address}
+            </div>
+          </div>
+        `;
+        marker.bindPopup(popupContent, { className: 'ele-leaflet-popup' });
+        this.shelterLayer.addLayer(marker);
+      });
+    }
+
+    // 2. Render Zona Risiko Bahaya Pesisir (InaRISK)
+    if (window.TSUNAMI_HAZARD_DATA.zones && this.hazardZonesLayer) {
+      this.hazardZonesLayer.clearLayers();
+      window.TSUNAMI_HAZARD_DATA.zones.forEach(zone => {
+        const isCritical = zone.levelCode === 'critical';
+        const color = isCritical ? '#dc2626' : '#ea580c';
+
+        const line = L.polyline(zone.coordinates, {
+          color: color,
+          weight: 4,
+          opacity: 0.85,
+          dashArray: '8, 6'
+        });
+
+        const buffer = L.polygon(zone.coordinates, {
+          color: color,
+          fillColor: color,
+          fillOpacity: 0.12,
+          weight: 1
+        });
+
+        const popupContent = `
+          <div class="p-1 font-sans text-xs text-slate-100 max-w-[280px]">
+            <div class="inline-block px-2 py-0.5 mb-1.5 rounded text-[10px] font-extrabold ${isCritical ? 'bg-red-950 text-red-300 border border-red-700' : 'bg-orange-950 text-orange-300 border border-orange-700'}">
+              ${zone.level}
+            </div>
+            <h4 class="font-extrabold text-white text-sm mb-1">${zone.name}</h4>
+            <div class="text-[11px] text-slate-300 mb-2">${zone.province}</div>
+            <div class="space-y-1 text-[11px] bg-slate-900/90 p-2 rounded-lg border border-slate-700 mb-2">
+              <div>Sumber Ancaman: <b class="text-slate-100">${zone.threatSource}</b></div>
+              <div>Potensi Gelombang: <b class="text-red-400 font-bold">${zone.potentialMaxWave}</b></div>
+              <div>Golden Time Evakuasi: <b class="text-amber-400 font-bold">${zone.goldenTimeMin}</b></div>
+            </div>
+            <p class="text-[11px] text-slate-300 leading-relaxed">${zone.description}</p>
+          </div>
+        `;
+
+        line.bindPopup(popupContent, { className: 'ele-leaflet-popup' });
+        buffer.bindPopup(popupContent, { className: 'ele-leaflet-popup' });
+
+        this.hazardZonesLayer.addLayer(line);
+        this.hazardZonesLayer.addLayer(buffer);
+      });
+    }
+  }
+
+  toggleShelterLayer() {
+    if (!this.map || !this.shelterLayer) return;
+    if (this.map.hasLayer(this.shelterLayer)) {
+      this.map.removeLayer(this.shelterLayer);
+      return false;
+    } else {
+      this.map.addLayer(this.shelterLayer);
+      return true;
+    }
+  }
+
+  toggleHazardLayer() {
+    if (!this.map || !this.hazardZonesLayer) return;
+    if (this.map.hasLayer(this.hazardZonesLayer)) {
+      this.map.removeLayer(this.hazardZonesLayer);
+      return false;
+    } else {
+      this.map.addLayer(this.hazardZonesLayer);
+      return true;
+    }
   }
 
   /**

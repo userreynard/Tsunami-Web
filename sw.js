@@ -1,16 +1,19 @@
-const CACHE_NAME = 'tsunami-id-v1';
+const CACHE_NAME = 'tsunami-id-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/peta.html',
   '/katalog.html',
+  '/simulasi.html',
   '/mitigasi.html',
   '/kontak.html',
   '/css/style.css',
   '/js/api.js',
   '/js/app.js',
   '/js/map.js',
+  '/js/simulasi.js',
   '/data/tsunamis.js',
+  '/data/hazard-zones.js',
   '/manifest.json',
   '/assets/icon-wave.svg',
   '/assets/icon-192.png',

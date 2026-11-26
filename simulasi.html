@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulasi &amp; Peta Risiko Tsunami Indonesia | Tsunami.ID</title>
+
+  <!-- PWA & Favicon -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0284c7">
+  <link rel="icon" type="image/svg+xml" href="assets/icon-wave.svg">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+
+  <!-- Tailwind CSS & Google Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#070d1e] text-slate-100 flex flex-col min-h-screen font-sans selection:bg-sky-500 selection:text-white">
+
+  <!-- ============================================================== -->
+  <!-- HEADER & NAVIGATION                                            -->
+  <!-- ============================================================== -->
+  <header class="sticky top-0 z-50 bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-800 shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-200">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+            <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+            <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+          </svg>
+        </div>
+        <div>
+          <span class="font-extrabold text-white text-base tracking-tight block">TSUNAMI<span class="text-sky-400">.ID</span></span>
+          <span class="text-[10px] text-slate-400 tracking-wide uppercase font-medium">Sistem Informasi &amp; Mitigasi Pesisir Indonesia</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-7 text-xs font-semibold text-slate-300">
+        <a href="index.html" class="hover:text-sky-400 transition">Beranda</a>
+        <a href="peta.html" class="hover:text-sky-400 transition">Peta Geospasial</a>
+        <a href="katalog.html" class="hover:text-sky-400 transition">Katalog Kejadian</a>
+        <a href="simulasi.html" class="text-sky-400 font-bold border-b-2 border-sky-400 pb-1">Simulasi &amp; Risiko</a>
+        <a href="mitigasi.html" class="hover:text-sky-400 transition">Mitigasi &amp; Edukasi</a>
+        <a href="kontak.html" class="ele-btn ele-btn-emergency py-2 px-3.5 text-xs gap-1.5 shadow-md">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+          Kontak Darurat
+        </a>
+      </nav>
+
+      <!-- Tombol Mobile Menu -->
+      <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-white" aria-label="Buka Menu">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
+
+    </div>
+
+    <!-- Mobile Navigation Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-5 border-t border-slate-800 bg-[#0f172a] space-y-2 text-sm font-semibold">
+      <a href="index.html" class="block py-1.5 text-slate-200 hover:text-sky-400">Beranda</a>
+      <a href="peta.html" class="block py-1.5 text-slate-200 hover:text-sky-400">Peta Geospasial</a>
+      <a href="katalog.html" class="block py-1.5 text-slate-200 hover:text-sky-400">Katalog Kejadian</a>
+      <a href="simulasi.html" class="block py-1.5 text-sky-400 font-bold">Simulasi &amp; Risiko</a>
+      <a href="mitigasi.html" class="block py-1.5 text-slate-200 hover:text-sky-400">Mitigasi &amp; Edukasi</a>
+      <a href="kontak.html" class="block py-2.5 px-3 rounded-lg text-white bg-red-600 hover:bg-red-700 font-bold text-center mt-2 shadow-xs">Kontak Darurat 24/7</a>
+    </div>
+  </header>
+
+  <!-- ============================================================== -->
+  <!-- HERO BANNER SECTION                                            -->
+  <!-- ============================================================== -->
+  <section class="bg-[#0b1329] border-b border-slate-800 py-10 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-950/80 border border-sky-500/30 text-sky-300 text-xs font-bold mb-3">
+        <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+        Simulasi Latihan &amp; Pemodelan Risiko Kebencanaan
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+        Simulasi &amp; Peta Zonasi Risiko Tsunami
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-300 mt-2 max-w-3xl leading-relaxed">
+        Kalkulator interaktif Golden Time evakuasi mandiri, visualisasi skenario rambatan megathrust, koridor kerentanan pesisir InaRISK BNPB, dan direktori resmi Tempat Evakuasi Sementara (TES).
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- MAIN CONTENT                                                   -->
+  <!-- ============================================================== -->
+  <main class="py-10 bg-[#070d1e] flex-1">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+
+      <!-- ============================================================ -->
+      <!-- FITUR 1: KALKULATOR GOLDEN TIME EVAKUASI MANDIRI              -->
+      <!-- ============================================================ -->
+      <section id="kalkulator-section" class="ele-card p-6 sm:p-8 bg-slate-800/95 border border-slate-700 shadow-xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-700 pb-4">
+          <div>
+            <div class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold bg-sky-950 text-sky-300 border border-sky-700 mb-1">
+              FITUR INTERAKTIF 1
+            </div>
+            <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
+              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              Kalkulator Golden Time Evakuasi Mandiri
+            </h2>
+            <p class="text-xs text-slate-300 mt-1">
+              Ukur apakah Anda dan keluarga memiliki cukup waktu untuk menyelamatkan diri ke shelter/dataran tinggi sebelum gelombang tiba.
+            </p>
+          </div>
+          <span class="text-xs text-slate-400 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700 self-start md:self-auto font-mono">
+            Rumus: T<sub>total</sub> = T<sub>reaksi</sub> + (Jarak / Kecepatan)
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          
+          <!-- Formulir Parameter -->
+          <div class="space-y-5 bg-slate-900/80 p-5 rounded-2xl border border-slate-700/80">
+            
+            <!-- Parameter 1: Estimasi Waktu Tiba Gelombang (ETA) -->
+            <div>
+              <label class="block text-xs font-bold text-slate-200 mb-1.5">
+                1. Skenario Wilayah / Estimasi Tiba Gelombang (ETA):
+              </label>
+              <select id="calc-eta" class="ele-input w-full p-2.5 text-xs text-white bg-slate-800 border-slate-700 focus:border-sky-400">
+                <option value="20">Pesisir Selat Sunda / Banten (~20 Menit)</option>
+                <option value="25" selected>Pesisir Barat Sumatera / Padang (~25 Menit)</option>
+                <option value="30">Pesisir Selatan Jawa / Pangandaran (~30 Menit)</option>
+                <option value="5">Teluk Palu / Patahan Cepat (~5 Menit - Ultra Kritis)</option>
+                <option value="15">Nusa Tenggara / Flores (~15 Menit)</option>
+                <option value="35">Pesisir Maluku &amp; Banda (~35 Menit)</option>
+              </select>
+              <p class="text-[11px] text-slate-400 mt-1">Rentang waktu perkiraan dari selesainya guncangan gempa hingga puncak gelombang pertama mencapai daratan.</p>
+            </div>
+
+            <!-- Parameter 2: Jarak ke Shelter Terdekat -->
+            <div>
+              <div class="flex justify-between items-center mb-1.5">
+                <label class="text-xs font-bold text-slate-200">
+                  2. Jarak ke Dataran Tinggi / Shelter TES Terdekat:
+                </label>
+                <span id="calc-shelter-dist-val" class="text-xs font-extrabold text-sky-400 font-mono">800 meter</span>
+              </div>
+              <input type="range" id="calc-shelter-dist" min="100" max="3000" step="50" value="800"
+                     class="w-full accent-sky-400 cursor-pointer bg-slate-800">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                <span>100 m (Sangat Dekat)</span>
+                <span>1.500 m</span>
+                <span>3.000 m (Jauh)</span>
+              </div>
+            </div>
+
+            <!-- Parameter 3: Kecepatan Evakuasi Rombongan -->
+            <div>
+              <label class="block text-xs font-bold text-slate-200 mb-1.5">
+                3. Kecepatan Gerak Evakuasi:
+              </label>
+              <select id="calc-speed" class="ele-input w-full p-2.5 text-xs text-white bg-slate-800 border-slate-700 focus:border-sky-400">
+                <option value="2.5">Jalan Santai / Bersama Balita &amp; Lansia (~2.5 km/jam)</option>
+                <option value="5.0" selected>Jalan Kaki Cepat &amp; Tanggap (~5.0 km/jam - Direkomendasikan)</option>
+                <option value="9.0">Berlari Tanpa Beban Berat (~9.0 km/jam)</option>
+                <option value="15.0">Sepeda / Roda Dua Bebas Hambatan (~15 km/jam)</option>
+              </select>
+              <p class="text-[11px] text-slate-400 mt-1">BNPB menganjurkan jalan kaki cepat untuk mencegah kemacetan kendaraan di jalur evakuasi.</p>
+            </div>
+
+            <button id="calc-btn" class="ele-btn ele-btn-primary w-full py-3 text-xs font-bold gap-2">
+              <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+              Hitung Golden Time &amp; Rasio Kelangsungan Hidup
+            </button>
+
+          </div>
+
+          <!-- Hasil Perhitungan -->
+          <div class="space-y-4">
+            <div id="calc-result" class="hidden">
+              <!-- Hasil dinamis diinjeksi via js/simulasi.js -->
+            </div>
+
+            <!-- Panduan Golden Time Statis -->
+            <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-700 text-xs text-slate-300 space-y-3">
+              <h4 class="font-extrabold text-white text-sm flex items-center gap-2">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Aturan Emas 20-20-20 Mitigasi Tsunami
+              </h4>
+              <p class="leading-relaxed">
+                Prinsip resmi kesiapsiagaan tsunami mandiri di wilayah kepulauan Indonesia:
+              </p>
+              <ul class="space-y-1.5 text-slate-200">
+                <li class="flex items-start gap-2">
+                  <b class="text-sky-400 font-bold shrink-0">20 Detik:</b>
+                  <span>Jika gempa bumi berguncang kuat lebih dari 20 detik (sulit berdiri tegak).</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <b class="text-sky-400 font-bold shrink-0">20 Menit:</b>
+                  <span>Anda hanya memiliki waktu rata-rata 20 menit sebelum gelombang tsunami menerjang daratan.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <b class="text-sky-400 font-bold shrink-0">20 Meter:</b>
+                  <span>Segera evakuasi menuju tempat dengan ketinggian minimal 20 meter di atas permukaan laut (mdpl) atau lantai 3 bangunan kokoh.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- FITUR 2: SKENARIO PEMODELAN MEGATHRUST NASIONAL               -->
+      <!-- ============================================================ -->
+      <section id="skenario-section" class="ele-card p-6 sm:p-8 bg-slate-800/95 border border-slate-700 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <div>
+            <div class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold bg-sky-950 text-sky-300 border border-sky-700 mb-1">
+              FITUR INTERAKTIF 2
+            </div>
+            <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
+              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+              Skenario Pemodelan Megathrust Nasional
+            </h2>
+            <p class="text-xs text-slate-300 mt-1">
+              Simulasi ilmiah berbasis pemodelan potensi pelepasan energi sesar subduksi untuk latihan kesiapsiagaan (drill).
+            </p>
+          </div>
+          <span class="text-xs text-slate-400 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700 self-start sm:self-auto">
+            Basis: BMKG InaTEWS &amp; PVMBG
+          </span>
+        </div>
+
+        <div id="scenario-container">
+          <!-- Injeksi skenario via js/simulasi.js -->
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- FITUR 3: ZONASI RISIKO PESISIR (INARISK BNPB) & TES           -->
+      <!-- ============================================================ -->
+      <section id="zonasi-section" class="space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold bg-red-950 text-red-300 border border-red-700 mb-1">
+              DATA RISIKO &amp; INFRASTRUKTUR
+            </div>
+            <h2 class="text-xl font-extrabold text-white">
+              Koridor Kerentanan Pesisir &amp; Direktori Shelter Evakuasi (TES)
+            </h2>
+            <p class="text-xs text-slate-300 mt-1">
+              Pemetaan zona ancaman tsunami InaRISK serta infrastruktur Gedung Evakuasi Tsunami tahan gempa nasional.
+            </p>
+          </div>
+          <a href="peta.html" class="ele-btn ele-btn-primary px-4 py-2 text-xs font-bold gap-2 self-start sm:self-auto">
+            <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+            Buka di Peta Geospasial &rarr;
+          </a>
+        </div>
+
+        <!-- Grid Zona Rawan & TES -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Card 1: Mentawai & Sumbar -->
+          <div class="ele-card p-5 bg-slate-800/95 border border-slate-700 shadow-md flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-red-950 text-red-400 border border-red-700">
+                  ZONA MERAH KRITIS
+                </span>
+                <span class="text-xs text-slate-400 font-mono">ETA: 20-30 mnt</span>
+              </div>
+              <h3 class="font-extrabold text-white text-base mb-1">Pesisir Barat Sumatera &amp; Mentawai</h3>
+              <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                Megathrust Mentawai-Siberut memiliki potensi gelombang 10–15 meter dengan ancaman langsung ke Kota Padang dan Pariaman.
+              </p>
+              <div class="text-[11px] text-slate-400 bg-slate-900/90 p-2.5 rounded-lg border border-slate-700 space-y-1 mb-3">
+                <div>Shelter Resmi: <b>TES Ulak Karang &amp; Pasie Nan Tigo</b></div>
+                <div>Kapasitas TES: <b class="text-emerald-400">5.500 Jiwa</b></div>
+              </div>
+            </div>
+            <a href="peta.html" class="ele-btn ele-btn-secondary w-full py-2 text-xs font-bold gap-1 text-center justify-center">
+              Tinjau Peta Wilayah Ini
+            </a>
+          </div>
+
+          <!-- Card 2: Selat Sunda -->
+          <div class="ele-card p-5 bg-slate-800/95 border border-slate-700 shadow-md flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-red-950 text-red-400 border border-red-700">
+                  ZONA MERAH KRITIS
+                </span>
+                <span class="text-xs text-slate-400 font-mono">ETA: 15-25 mnt</span>
+              </div>
+              <h3 class="font-extrabold text-white text-base mb-1">Pesisir Selat Sunda &amp; Banten</h3>
+              <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                Kawasan wisata Anyer, Carita, dan Pandeglang rentan terhadap longsoran tubuh vulkanik Anak Krakatau serta sesar subduksi selatan.
+              </p>
+              <div class="text-[11px] text-slate-400 bg-slate-900/90 p-2.5 rounded-lg border border-slate-700 space-y-1 mb-3">
+                <div>Shelter Resmi: <b>TES Citepus &amp; Titik Bukit Anyer</b></div>
+                <div>Kapasitas TES: <b class="text-emerald-400">2.200+ Jiwa</b></div>
+              </div>
+            </div>
+            <a href="peta.html" class="ele-btn ele-btn-secondary w-full py-2 text-xs font-bold gap-1 text-center justify-center">
+              Tinjau Peta Wilayah Ini
+            </a>
+          </div>
+
+          <!-- Card 3: Selatan Jawa -->
+          <div class="ele-card p-5 bg-slate-800/95 border border-slate-700 shadow-md flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-red-950 text-red-400 border border-red-700">
+                  ZONA MERAH KRITIS
+                </span>
+                <span class="text-xs text-slate-400 font-mono">ETA: 20-35 mnt</span>
+              </div>
+              <h3 class="font-extrabold text-white text-base mb-1">Pesisir Selatan Jawa (Pangandaran - Pacitan)</h3>
+              <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                Zona subduksi lempeng Samudera Hindia terbuka tanpa pelindung pulau, berpotensi memicu gelombang hingga 20 meter pada teluk landai.
+              </p>
+              <div class="text-[11px] text-slate-400 bg-slate-900/90 p-2.5 rounded-lg border border-slate-700 space-y-1 mb-3">
+                <div>Shelter Resmi: <b>TES Pangandaran, Cilacap, &amp; Teleng Ria</b></div>
+                <div>Kapasitas TES: <b class="text-emerald-400">6.800 Jiwa</b></div>
+              </div>
+            </div>
+            <a href="peta.html" class="ele-btn ele-btn-secondary w-full py-2 text-xs font-bold gap-1 text-center justify-center">
+              Tinjau Peta Wilayah Ini
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============================================================== -->
+  <!-- FOOTER                                                         -->
+  <!-- ============================================================== -->
+  <footer class="bg-[#0f172a] py-8 sm:py-10 text-xs text-slate-400 border-t border-slate-800 shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+          TS
+        </div>
+        <div>
+          <div class="text-white font-bold text-sm">Portal Tsunami Indonesia</div>
+          <div class="text-slate-400 text-[11px]">Sistem Informasi &amp; Pembelajaran Mitigasi Pesisir</div>
+        </div>
+      </div>
+
+      <div class="text-center md:text-right">
+        <p class="text-slate-300 mb-1">&copy; 2026 Tsunami.ID &bull; Platform Informasi Edukasi &amp; Mitigasi Geospasial</p>
+        <p>Sumber Data: <a href="https://inarisk.bnpb.go.id/" target="_blank" class="text-blue-400 hover:underline">InaRISK BNPB</a>, <a href="https://data.bmkg.go.id/" target="_blank" class="text-blue-400 hover:underline">BMKG InaTEWS</a> &amp; <a href="https://www.ngdc.noaa.gov/" target="_blank" class="text-blue-400 hover:underline">NOAA NCEI</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data/hazard-zones.js"></script>
+  <script src="js/simulasi.js"></script>
+  <script>
+    // Mobile Menu Toggle
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileBtn && mobileMenu) {
+      mobileBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  </script>
+</body>
+</html>
