@@ -211,12 +211,110 @@ async function loadAllTsunamiEvents(onStatusUpdate) {
   return events;
 }
 
+/**
+ * Mengevaluasi potensi tsunami dan estimasi tinggi gelombang berdasarkan data BMKG InaTEWS
+ * Sesuai Standar Operasional Prosedur (SOP) BMKG InaTEWS & Kategori Bahaya:
+ * - AWAS: Estimasi tinggi gelombang > 3.0 m (Evakuasi menyeluruh ke tempat tinggi)
+ * - SIAGA: Estimasi tinggi gelombang 0.5 – 3.0 m (Evakuasi dari pantai dan muara)
+ * - WASPADA: Estimasi tinggi gelombang < 0.5 m (Jauhi pantai dan tepian sungai)
+ * - NORMAL / AMAN: Tidak berpotensi tsunami (Estimasi gelombang 0 m)
+ */
+function evaluateBmkgTsunamiPotential(gempa) {
+  if (!gempa) {
+    return {
+      isPotential: false,
+      alertLevel: 'NORMAL',
+      statusBadge: 'Tidak Berpotensi Tsunami',
+      waveEstimate: '0 m (Normal / Aman)',
+      waveHeightShort: '0 m',
+      badgeClass: 'bg-emerald-950/80 text-emerald-400 border border-emerald-600/80',
+      recommendation: 'Aktivitas perairan dan pesisir normal dan aman.',
+      rawPotensi: 'Data tidak tersedia'
+    };
+  }
+
+  const rawPotensi = (gempa.Potensi || '').trim();
+  const lowerPotensi = rawPotensi.toLowerCase();
+  const wilayahLower = (gempa.Wilayah || '').toLowerCase();
+
+  // Ekstrak Magnitudo & Kedalaman numerik
+  const mag = parseFloat(gempa.Magnitude) || 0;
+  let depth = 999;
+  if (gempa.Kedalaman) {
+    const depthMatch = gempa.Kedalaman.match(/(\d+(\.\d+)?)/);
+    if (depthMatch) depth = parseFloat(depthMatch[1]);
+  }
+
+  const isSea = wilayahLower.includes('laut') || wilayahLower.includes('selat') || wilayahLower.includes('samudera') || wilayahLower.includes('samudra');
+  const isLand = wilayahLower.includes('darat');
+
+  // Cek apakah ada frasa tidak berpotensi
+  const isExplicitlyNoTsunami = lowerPotensi.includes('tidak berpotensi') || lowerPotensi.includes('bukan potensi tsunami');
+  const mentionsTsunami = (lowerPotensi.includes('berpotensi tsunami') || lowerPotensi.includes('peringatan dini tsunami') || lowerPotensi.includes('potensi tsunami')) && !isExplicitlyNoTsunami;
+
+  let isPotential = false;
+  let alertLevel = 'NORMAL';
+  let statusBadge = 'Tidak Berpotensi Tsunami';
+  let waveEstimate = '0 m (Normal / Aman)';
+  let waveHeightShort = '0 m';
+  let badgeClass = 'bg-emerald-950/80 text-emerald-400 border border-emerald-600/80';
+  let recommendation = 'Gempa tidak menimbulkan ancaman tsunami di pesisir pantai.';
+
+  // Evaluasi potensi ancaman tsunami InaTEWS
+  if (mentionsTsunami || (!isExplicitlyNoTsunami && !isLand && isSea && mag >= 6.8 && depth <= 70)) {
+    isPotential = true;
+
+    if (lowerPotensi.includes('awas') || mag >= 7.8) {
+      alertLevel = 'AWAS';
+      statusBadge = 'PERINGATAN: POTENSI TSUNAMI (AWAS)';
+      waveEstimate = '> 3.0 m (Ancaman Tinggi / Bencana)';
+      waveHeightShort = '> 3.0 m';
+      badgeClass = 'bg-red-950/90 text-red-300 border border-red-500 animate-pulse font-extrabold';
+      recommendation = 'Evakuasi menyeluruh ke dataran tinggi segera! Gelombang berpotensi melanda permukiman.';
+    } else if (lowerPotensi.includes('siaga') || mag >= 7.0) {
+      alertLevel = 'SIAGA';
+      statusBadge = 'PERINGATAN: POTENSI TSUNAMI (SIAGA)';
+      waveEstimate = '0.5 – 3.0 m (Ancaman Sedang)';
+      waveHeightShort = '0.5 – 3.0 m';
+      badgeClass = 'bg-amber-950/90 text-amber-300 border border-amber-500 animate-pulse font-extrabold';
+      recommendation = 'Evakuasi segera dari sempadan pantai dan muara sungai menuju tempat aman.';
+    } else {
+      alertLevel = 'WASPADA';
+      statusBadge = 'WASPADA POTENSI TSUNAMI';
+      waveEstimate = '< 0.5 m (Ancaman Minor)';
+      waveHeightShort = '< 0.5 m';
+      badgeClass = 'bg-yellow-950/90 text-yellow-300 border border-yellow-500 font-extrabold';
+      recommendation = 'Jauhi pantai dan tepian sungai. Waspadai anomali arus kuat perairan laut.';
+    }
+  } else {
+    isPotential = false;
+    alertLevel = 'NORMAL';
+    statusBadge = 'Tidak Berpotensi Tsunami';
+    waveEstimate = '0 m (Normal / Aman)';
+    waveHeightShort = '0 m';
+    badgeClass = 'bg-emerald-950/80 text-emerald-400 border border-emerald-600/80';
+    recommendation = 'Gempa bumi tidak memicu gelombang tsunami. Kondisi permukaan laut aman.';
+  }
+
+  return {
+    isPotential,
+    alertLevel,
+    statusBadge,
+    waveEstimate,
+    waveHeightShort,
+    badgeClass,
+    recommendation,
+    rawPotensi: rawPotensi || 'Tidak berpotensi tsunami'
+  };
+}
+
 // Ekspor ke window
 window.TsunamiAPI = {
   fetchBmkgLatestAlert,
   loadAllTsunamiEvents,
   getTsunamiCauseDescription,
-  normalizeNoaaEvent
+  normalizeNoaaEvent,
+  evaluateBmkgTsunamiPotential
 };
 
 // Kompatibilitas OOP class

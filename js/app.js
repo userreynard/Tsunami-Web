@@ -99,33 +99,48 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderBmkgAlert(gempa) {
     if (!bmkgStatusCard || !gempa) return;
 
-    const isTsunamiPotential = (gempa.Potensi || '').toLowerCase().includes('berpotensi tsunami') && 
-                              !(gempa.Potensi || '').toLowerCase().includes('tidak berpotensi');
+    const evalResult = (window.TsunamiAPI && typeof window.TsunamiAPI.evaluateBmkgTsunamiPotential === 'function')
+      ? window.TsunamiAPI.evaluateBmkgTsunamiPotential(gempa)
+      : {
+          isPotential: (gempa.Potensi || '').toLowerCase().includes('berpotensi tsunami') && !(gempa.Potensi || '').toLowerCase().includes('tidak berpotensi'),
+          alertLevel: 'NORMAL',
+          statusBadge: (gempa.Potensi || '').toLowerCase().includes('berpotensi tsunami') ? 'BERPOTENSI TSUNAMI' : 'Tidak Berpotensi Tsunami',
+          waveEstimate: (gempa.Potensi || '').toLowerCase().includes('berpotensi tsunami') ? '> 0.5 m' : '0 m (Normal / Aman)',
+          waveHeightShort: '0 m',
+          badgeClass: 'bg-emerald-950/80 text-emerald-400 border border-emerald-600',
+          recommendation: 'Kondisi perairan laut normal dan aman.'
+        };
 
     bmkgStatusCard.innerHTML = `
-      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-4">
-        <div class="flex items-start sm:items-center gap-3 sm:gap-4">
-          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${isTsunamiPotential ? 'bg-red-950/80 text-red-400 border border-red-600' : 'bg-blue-950/80 text-sky-400 border border-blue-700'} flex items-center justify-center shrink-0 shadow-sm">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3.5 sm:gap-4">
+        <div class="flex items-start sm:items-center gap-3 sm:gap-4 flex-1 min-w-0">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${evalResult.isPotential ? 'bg-red-950/90 text-red-400 border border-red-500 shadow-md shadow-red-950/50' : 'bg-blue-950/80 text-sky-400 border border-blue-700'} flex items-center justify-center shrink-0 shadow-sm">
             <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
           </div>
-          <div>
+          <div class="flex-1 min-w-0">
             <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider ${isTsunamiPotential ? 'text-red-400' : 'text-sky-400'}">
+              <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider ${evalResult.isPotential ? 'text-red-400' : 'text-sky-400'}">
                 Pemantauan BMKG Terkini
               </span>
               <span class="text-slate-500 text-xs hidden sm:inline">|</span>
               <span class="text-[11px] sm:text-xs text-slate-300 font-medium">${gempa.Tanggal || 'Hari ini'} pukul ${gempa.Jam || ''}</span>
             </div>
             <h3 class="text-sm sm:text-base font-extrabold text-white mt-0.5 leading-snug">${gempa.Wilayah || 'Wilayah Perairan Indonesia'}</h3>
-            <p class="text-xs text-slate-200 mt-0.5 leading-relaxed">
-              Magnitudo: <strong class="text-sky-400 font-mono font-bold">M ${gempa.Magnitude || '-'}</strong> &nbsp;|&nbsp; 
-              Kedalaman: <strong class="text-white">${gempa.Kedalaman || '-'}</strong> &nbsp;|&nbsp; 
-              <span class="font-bold ${isTsunamiPotential ? 'text-red-400 font-extrabold animate-pulse' : 'text-emerald-400'}">${gempa.Potensi || 'Tidak berpotensi tsunami'}</span>
-            </p>
+            <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-xs text-slate-200 mt-1">
+              <span>Magnitudo: <strong class="text-sky-400 font-mono font-bold">M ${gempa.Magnitude || '-'}</strong></span>
+              <span class="text-slate-500 hidden sm:inline">|</span>
+              <span>Kedalaman: <strong class="text-white">${gempa.Kedalaman || '-'}</strong></span>
+              <span class="text-slate-500 hidden sm:inline">|</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold ${evalResult.badgeClass}">
+                ${evalResult.statusBadge}
+              </span>
+              <span class="text-slate-500 hidden sm:inline">|</span>
+              <span>Estimasi Gelombang: <strong class="${evalResult.isPotential ? 'text-amber-300 font-extrabold' : 'text-emerald-400 font-bold'}">${evalResult.waveEstimate}</strong></span>
+            </div>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full md:w-auto shrink-0">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full lg:w-auto shrink-0 mt-1 lg:mt-0">
           <button onclick="window.appFocusBmkgGempa()" class="ele-btn ele-btn-secondary w-full sm:w-auto flex-1 md:flex-initial text-xs gap-1.5 cursor-pointer shadow-xs justify-center min-h-[40px]">
             <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
             Tinjau di Peta
@@ -135,6 +150,16 @@ document.addEventListener('DOMContentLoaded', async () => {
           </a>
         </div>
       </div>
+      ${evalResult.isPotential ? `
+        <div class="mt-3 p-2.5 rounded-lg bg-red-950/80 border border-red-600 text-xs text-red-200 font-semibold flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+          <div>
+            <strong class="text-red-300 uppercase tracking-wide">Instruksi BMKG:</strong> ${evalResult.recommendation}
+          </div>
+          <a href="mitigasi.html#peringatan-section" class="underline text-white font-bold hover:text-red-300 shrink-0">
+            Panduan Evakuasi &rarr;
+          </a>
+        </div>
+      ` : ''}
     `;
   }
 

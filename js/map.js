@@ -225,7 +225,7 @@ class TsunamiMapController {
   }
 
   /**
-   * Menampilkan titik jika BMKG merilis peringatan dini potensi tsunami
+   * Menampilkan titik pusat gempa BMKG terkini beserta potensi tsunami dan estimasi tinggi gelombang
    */
   setBmkgMarker(gempaData) {
     if (this.bmkgMarker) {
@@ -235,50 +235,137 @@ class TsunamiMapController {
 
     if (!gempaData || !gempaData.Coordinates) return;
 
-    // Saring: Hanya masukkan titik ke peta jika berpotensi tsunami
-    const isTsunamiWarning = (gempaData.Potensi || '').toLowerCase().includes('berpotensi tsunami') && 
-                             !(gempaData.Potensi || '').toLowerCase().includes('tidak berpotensi');
-
-    // Jika gempa bumi biasa (tidak berpotensi tsunami), titik tidak dimasukkan ke peta
-    if (!isTsunamiWarning) {
-      return;
-    }
-
     const [lat, lng] = gempaData.Coordinates.split(',').map(Number);
     if (isNaN(lat) || isNaN(lng)) return;
 
-    const pulseIcon = L.divIcon({
-      className: 'relative flex items-center justify-center',
-      html: `
-        <div class="relative w-8 h-8 flex items-center justify-center">
-          <div class="absolute w-8 h-8 rounded-full bg-red-600/30 animate-ping"></div>
-          <div class="absolute w-4 h-4 rounded-full bg-red-600 border-2 border-white shadow-md"></div>
+    const evalResult = (window.TsunamiAPI && typeof window.TsunamiAPI.evaluateBmkgTsunamiPotential === 'function')
+      ? window.TsunamiAPI.evaluateBmkgTsunamiPotential(gempaData)
+      : {
+          isPotential: (gempaData.Potensi || '').toLowerCase().includes('berpotensi tsunami') && !(gempaData.Potensi || '').toLowerCase().includes('tidak berpotensi'),
+          alertLevel: 'NORMAL',
+          statusBadge: 'Tidak Berpotensi Tsunami',
+          waveEstimate: '0 m (Normal / Aman)',
+          waveHeightShort: '0 m',
+          badgeClass: 'bg-emerald-950/80 text-emerald-400 border border-emerald-600',
+          recommendation: 'Kondisi perairan laut normal dan aman.'
+        };
+
+    let pulseIcon;
+    let bmkgPopup;
+
+    if (evalResult.isPotential) {
+      // Icon Peringatan Dini Potensi Tsunami (Merah/Amber Berdenyut Kuat)
+      pulseIcon = L.divIcon({
+        className: 'relative flex items-center justify-center',
+        html: `
+          <div class="relative w-9 h-9 flex items-center justify-center">
+            <div class="absolute w-9 h-9 rounded-full bg-red-600/40 animate-ping"></div>
+            <div class="absolute w-5 h-5 rounded-full bg-red-600 border-2 border-white shadow-lg"></div>
+          </div>
+        `,
+        iconSize: [36, 36],
+        iconAnchor: [18, 18]
+      });
+
+      bmkgPopup = `
+        <div class="p-1 max-w-[290px] font-sans text-slate-100">
+          <div class="flex items-center gap-1.5 text-xs font-bold text-red-400 mb-1.5 pb-1 border-b border-slate-700">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+            <span>BMKG InaTEWS: ${evalResult.statusBadge}</span>
+          </div>
+          
+          <h4 class="font-extrabold text-white text-sm leading-snug mb-2">
+            ${gempaData.Wilayah || 'Wilayah Perairan Indonesia'}
+          </h4>
+
+          <div class="grid grid-cols-2 gap-2 mb-2.5 bg-slate-900/90 p-2.5 rounded-lg border border-slate-700 text-xs">
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-semibold">Estimasi Gelombang</span>
+              <span class="font-extrabold text-amber-300 text-sm font-mono-num">
+                ${evalResult.waveHeightShort}
+              </span>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-semibold">Magnitudo</span>
+              <span class="font-extrabold text-sky-400 text-sm font-mono-num">
+                M ${gempaData.Magnitude || '-'}
+              </span>
+            </div>
+            <div class="col-span-2 pt-1 border-t border-slate-800 text-[11px] text-slate-300">
+              Kedalaman: <strong class="text-white">${gempaData.Kedalaman || '-'}</strong> | ${gempaData.Tanggal || ''} ${gempaData.Jam || ''}
+            </div>
+          </div>
+
+          <div class="p-2 rounded-lg text-xs font-semibold bg-red-950/80 text-red-200 border border-red-700 mb-2.5">
+            <strong>Instruksi:</strong> ${evalResult.recommendation}
+          </div>
+
+          <a href="mitigasi.html#peringatan-section" 
+             class="ele-btn ele-btn-primary w-full py-2 px-3 text-xs font-bold gap-1.5 justify-center text-center min-h-[38px] shadow-md shadow-blue-900/40">
+            <span>Panduan Mitigasi & Evakuasi &rarr;</span>
+          </a>
         </div>
-      `,
-      iconSize: [32, 32],
-      iconAnchor: [16, 16]
-    });
+      `;
+    } else {
+      // Icon Episentrum Gempa BMKG Normal (Cyan / Sky Blue Ring)
+      pulseIcon = L.divIcon({
+        className: 'relative flex items-center justify-center',
+        html: `
+          <div class="relative w-8 h-8 flex items-center justify-center">
+            <div class="absolute w-7 h-7 rounded-full bg-sky-500/30 animate-pulse"></div>
+            <div class="absolute w-3.5 h-3.5 rounded-full bg-sky-400 border-2 border-white shadow-md"></div>
+          </div>
+        `,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16]
+      });
+
+      bmkgPopup = `
+        <div class="p-1 max-w-[280px] font-sans text-slate-100">
+          <div class="flex items-center justify-between gap-1.5 text-xs font-bold text-sky-400 mb-1.5 pb-1 border-b border-slate-700">
+            <span class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+              Episentrum BMKG Terkini
+            </span>
+            <span class="text-[10px] text-slate-300 font-normal">${gempaData.Jam || ''}</span>
+          </div>
+
+          <h4 class="font-extrabold text-white text-sm leading-snug mb-2">
+            ${gempaData.Wilayah || 'Wilayah Indonesia'}
+          </h4>
+
+          <div class="grid grid-cols-2 gap-2 mb-2.5 bg-slate-900/90 p-2.5 rounded-lg border border-slate-700 text-xs">
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-semibold">Estimasi Gelombang</span>
+              <span class="font-extrabold text-emerald-400 text-sm font-mono-num">
+                ${evalResult.waveHeightShort} (Aman)
+              </span>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-semibold">Magnitudo</span>
+              <span class="font-extrabold text-sky-400 text-sm font-mono-num">
+                M ${gempaData.Magnitude || '-'}
+              </span>
+            </div>
+            <div class="col-span-2 pt-1 border-t border-slate-800 text-[11px] text-slate-300">
+              Kedalaman: <strong class="text-white">${gempaData.Kedalaman || '-'}</strong> | ${gempaData.Tanggal || ''}
+            </div>
+          </div>
+
+          <div class="p-2 rounded-lg text-xs font-medium bg-emerald-950/80 text-emerald-300 border border-emerald-700/80 mb-2.5">
+            Status: <strong class="text-white font-bold">Tidak Berpotensi Tsunami</strong>. Permukaan laut dalam kondisi normal.
+          </div>
+
+          <a href="mitigasi.html#peringatan-section" 
+             class="ele-btn ele-btn-secondary w-full py-2 px-3 text-xs font-bold gap-1.5 justify-center text-center min-h-[38px] shadow-sm">
+            <span>Kriteria Peringatan Dini &rarr;</span>
+          </a>
+        </div>
+      `;
+    }
 
     this.bmkgMarker = L.marker([lat, lng], { icon: pulseIcon }).addTo(this.map);
-
-    const bmkgPopup = `
-      <div class="p-1.5 max-w-[280px] font-sans text-slate-800">
-        <div class="flex items-center gap-1.5 text-xs font-bold text-red-600 mb-1">
-          <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-          Peringatan Potensi Tsunami (BMKG InaTEWS)
-        </div>
-        <h4 class="font-extrabold text-slate-900 text-sm mb-1">${gempaData.Wilayah}</h4>
-        <div class="text-xs space-y-1 mb-2 text-slate-600">
-          <div>Waktu: <b class="text-slate-800">${gempaData.Tanggal} ${gempaData.Jam}</b></div>
-          <div>Parameter: <b class="text-red-600 font-mono font-bold">M ${gempaData.Magnitude}</b> | Kedalaman: <b class="text-slate-800">${gempaData.Kedalaman}</b></div>
-        </div>
-        <div class="p-2 rounded-md text-xs font-semibold bg-red-50 text-red-700 border border-red-200">
-          ${gempaData.Potensi}
-        </div>
-      </div>
-    `;
-
-    this.bmkgMarker.bindPopup(bmkgPopup, { className: 'ele-leaflet-popup' });
+    this.bmkgMarker.bindPopup(bmkgPopup, { className: 'ele-leaflet-popup', maxWidth: 300 });
   }
 
   focusIndonesia() {
