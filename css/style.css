@@ -114,39 +114,39 @@ body {
   transform: translateY(0) scale(0.98);
 }
 
-/* Primary Action: Ocean Blue Gradient */
+/* Primary Action: Solid Oceanic Blue Gradient */
 .ele-btn-primary {
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
   color: #ffffff !important;
-  border: 1px solid #3b82f6;
-  box-shadow: 0 2px 6px -1px rgba(37, 99, 235, 0.45), 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: 1px solid #38bdf8;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35), 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .ele-btn-primary:hover {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  border-color: #60a5fa;
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  border-color: #7dd3fc;
   color: #ffffff !important;
-  box-shadow: 0 6px 20px -3px rgba(37, 99, 235, 0.55), 0 2px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 20px -2px rgba(14, 165, 233, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
   transform: translateY(-1.5px);
 }
 
-/* Secondary Action: Deep Slate Navy with Sky Hover */
+/* Secondary Action: Translucent Marine Oceanic (Senada & Harmonious) */
 .ele-btn-secondary {
-  background: #1e293b;
-  color: #f1f5f9 !important;
-  border: 1px solid #3b4c68;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.12) 0%, rgba(2, 132, 199, 0.2) 100%);
+  color: #f0f9ff !important;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 1px 4px rgba(2, 132, 199, 0.15);
 }
 
 .ele-btn-secondary:hover {
-  background: #27354f;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.25) 0%, rgba(2, 132, 199, 0.35) 100%);
   border-color: #38bdf8;
-  color: #38bdf8 !important;
-  box-shadow: 0 6px 18px -3px rgba(56, 189, 248, 0.25);
+  color: #ffffff !important;
+  box-shadow: 0 6px 18px -2px rgba(56, 189, 248, 0.35);
   transform: translateY(-1.5px);
 }
 
-/* Emergency Button: High-Alert Crimson */
+/* Emergency Button: High-Alert Crimson (Satu-satunya Tombol Merah) */
 .ele-btn-emergency {
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   color: #ffffff !important;
@@ -172,16 +172,16 @@ body {
   padding: 0.5rem 1rem;
   font-size: 0.75rem;
   min-height: 38px;
-  background-color: #111c33;
+  background-color: rgba(15, 23, 42, 0.85);
   color: #cbd5e1;
-  border: 1px solid #2e3e5c;
+  border: 1px solid rgba(56, 189, 248, 0.25);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   user-select: none;
 }
 
 .filter-btn:hover {
-  background-color: #1a2947;
+  background-color: rgba(14, 165, 233, 0.15);
   border-color: #38bdf8;
   color: #ffffff;
   box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
@@ -189,10 +189,10 @@ body {
 }
 
 .filter-btn.active, .filter-btn[data-active="true"] {
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
   color: #ffffff !important;
-  border-color: #60a5fa !important;
-  box-shadow: 0 3px 12px rgba(37, 99, 235, 0.45);
+  border-color: #38bdf8 !important;
+  box-shadow: 0 3px 12px rgba(2, 132, 199, 0.45);
 }
 
 /* Input Fields */
