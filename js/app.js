@@ -262,9 +262,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       let badgeClass = 'ele-badge-slate';
       let badgeLabel = 'Gelombang < 1m';
 
-      if (height >= 5.0 || (item.deaths && item.deaths > 100)) {
+      if (height >= 5.0) {
         badgeClass = 'ele-badge-red';
         badgeLabel = 'Gelombang Tinggi (> 5m)';
+      } else if (item.deaths && item.deaths > 100) {
+        badgeClass = 'ele-badge-red';
+        badgeLabel = 'Dampak Besar (> 100 Jiwa)';
       } else if (height >= 1.0) {
         badgeClass = 'ele-badge-amber';
         badgeLabel = 'Gelombang Sedang (1-5m)';
