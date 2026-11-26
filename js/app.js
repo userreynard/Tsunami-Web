@@ -89,8 +89,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (statTotalEvents) statTotalEvents.textContent = total.toLocaleString('id-ID');
     if (statIndonesiaEvents) statIndonesiaEvents.textContent = indoEvents.length.toLocaleString('id-ID');
-    // Rekor gelombang tertinggi di Indonesia adalah letusan Krakatau (85 meter)
-    if (statMaxWave) statMaxWave.textContent = '85 m (Krakatau)';
+    // Rekor gelombang tertinggi di Indonesia adalah letusan Anak Krakatau 2018 (85 meter di tebing Pulau Rakata)
+    if (statMaxWave) statMaxWave.textContent = '85 m (Krakatau 2018)';
     if (statLatestYear) statLatestYear.textContent = newestYear;
   }
 
