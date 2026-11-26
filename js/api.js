@@ -9,14 +9,14 @@
  */
 
 const API_ENDPOINTS = {
-  // Proxy lokal server (prioritas 1 - bebas CORS & blokir)
+  // Proxy lokal server 
   PROXY_BMKG: '/api/bmkg',
   PROXY_NOAA: '/api/noaa',
 
   // API Resmi BMKG Indonesia (InaTEWS)
   BMKG_AUTOGEMPA: 'https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json',
   
-  // API Tsunami Gratis NOAA (gunakan minYear=1900 agar peristiwa modern 2018-sekarang tidak terpotong oleh limit paginasi)
+  // API Tsunami Gratis NOAA (min year 1900 untuk Indonesia, min year 2000 untuk global)
   NOAA_INDONESIA: 'https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/tsunamis/events?country=INDONESIA&minYear=1900',
   NOAA_GLOBAL: 'https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/tsunamis/events?minYear=2000'
 };
@@ -250,7 +250,12 @@ function evaluateBmkgTsunamiPotential(gempa) {
 
   // Cek apakah ada frasa tidak berpotensi
   const isExplicitlyNoTsunami = lowerPotensi.includes('tidak berpotensi') || lowerPotensi.includes('bukan potensi tsunami');
-  const mentionsTsunami = (lowerPotensi.includes('berpotensi tsunami') || lowerPotensi.includes('peringatan dini tsunami') || lowerPotensi.includes('potensi tsunami')) && !isExplicitlyNoTsunami;
+  
+  // Deteksi peringatan tsunami tektonik maupun non-tektonik (vulkanik / erupsi gunung api / flank collapse)
+  const isVolcanicAlert = (lowerPotensi.includes('erupsi') || lowerPotensi.includes('gunung api') || lowerPotensi.includes('vulkanik') || lowerPotensi.includes('longsoran') || lowerPotensi.includes('flank collapse') || wilayahLower.includes('krakatau') || wilayahLower.includes('gunung ruang')) && 
+                          (lowerPotensi.includes('tsunami') || lowerPotensi.includes('gelombang') || lowerPotensi.includes('waspada') || lowerPotensi.includes('siaga') || lowerPotensi.includes('awas'));
+  
+  const mentionsTsunami = (lowerPotensi.includes('berpotensi tsunami') || lowerPotensi.includes('peringatan dini tsunami') || lowerPotensi.includes('potensi tsunami') || isVolcanicAlert) && !isExplicitlyNoTsunami;
 
   let isPotential = false;
   let alertLevel = 'NORMAL';
@@ -260,7 +265,7 @@ function evaluateBmkgTsunamiPotential(gempa) {
   let badgeClass = 'bg-emerald-950/80 text-emerald-400 border border-emerald-600/80';
   let recommendation = 'Gempa tidak menimbulkan ancaman tsunami di pesisir pantai.';
 
-  // Evaluasi potensi ancaman tsunami InaTEWS
+  // Evaluasi potensi ancaman tsunami InaTEWS (Tektonik & Erupsi Vulkanik Bawah Laut)
   if (mentionsTsunami || (!isExplicitlyNoTsunami && !isLand && isSea && mag >= 6.8 && depth <= 70)) {
     isPotential = true;
 
@@ -270,21 +275,27 @@ function evaluateBmkgTsunamiPotential(gempa) {
       waveEstimate = '> 3.0 m (Ancaman Tinggi / Bencana)';
       waveHeightShort = '> 3.0 m';
       badgeClass = 'bg-red-950/90 text-red-300 border border-red-500 animate-pulse font-extrabold';
-      recommendation = 'Evakuasi menyeluruh ke dataran tinggi segera! Gelombang berpotensi melanda permukiman.';
+      recommendation = isVolcanicAlert 
+        ? 'Evakuasi menyeluruh ke dataran tinggi segera! Bahaya hempasan gelombang masif akibat erupsi/longsoran tubuh gunung api ke laut.'
+        : 'Evakuasi menyeluruh ke dataran tinggi segera! Gelombang berpotensi melanda permukiman.';
     } else if (lowerPotensi.includes('siaga') || mag >= 7.0) {
       alertLevel = 'SIAGA';
       statusBadge = 'PERINGATAN: POTENSI TSUNAMI (SIAGA)';
       waveEstimate = '0.5 – 3.0 m (Ancaman Sedang)';
       waveHeightShort = '0.5 – 3.0 m';
       badgeClass = 'bg-amber-950/90 text-amber-300 border border-amber-500 animate-pulse font-extrabold';
-      recommendation = 'Evakuasi segera dari sempadan pantai dan muara sungai menuju tempat aman.';
+      recommendation = isVolcanicAlert
+        ? 'Evakuasi warga dari sempadan pantai dan muara sungai segera menuju tempat aman. Waspadai longsoran material vulkanik ke laut.'
+        : 'Evakuasi segera dari sempadan pantai dan muara sungai menuju tempat aman.';
     } else {
       alertLevel = 'WASPADA';
       statusBadge = 'WASPADA POTENSI TSUNAMI';
       waveEstimate = '< 0.5 m (Ancaman Minor)';
       waveHeightShort = '< 0.5 m';
       badgeClass = 'bg-yellow-950/90 text-yellow-300 border border-yellow-500 font-extrabold';
-      recommendation = 'Jauhi pantai dan tepian sungai. Waspadai anomali arus kuat perairan laut.';
+      recommendation = isVolcanicAlert
+        ? 'Jauhi pantai dan tepian sungai. Waspadai anomali gelombang akibat aktivitas vulkanik gunung api di laut.'
+        : 'Jauhi pantai dan tepian sungai. Waspadai anomali arus kuat perairan laut.';
     }
   } else {
     isPotential = false;

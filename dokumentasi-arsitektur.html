@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Dokumentasi Arsitektur API dan Spesifikasi Teknologi - Tsunami Indonesia</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      background-color: #ffffff;
+      line-height: 1.55;
+      font-size: 10.5pt;
+    }
+
+    /* Cover / Header Section */
+    .header-box {
+      border-bottom: 2.5pt solid #0369a1;
+      padding-bottom: 14pt;
+      margin-bottom: 18pt;
+    }
+
+    .badge-doc {
+      display: inline-block;
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8pt;
+      color: #0369a1;
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      padding: 2.5pt 8pt;
+      border-radius: 4pt;
+      margin-bottom: 6pt;
+    }
+
+    h1 {
+      font-size: 18pt;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.25;
+      margin-bottom: 4pt;
+    }
+
+    .subtitle {
+      font-size: 11pt;
+      color: #475569;
+      font-weight: 500;
+      margin-bottom: 8pt;
+    }
+
+    .meta-grid {
+      display: table;
+      width: 100%;
+      margin-top: 8pt;
+      font-size: 8.5pt;
+      color: #64748b;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 6pt;
+    }
+
+    .meta-item {
+      display: table-cell;
+      width: 25%;
+    }
+
+    .meta-item strong {
+      color: #1e293b;
+    }
+
+    /* Headings */
+    h2 {
+      font-size: 12.5pt;
+      font-weight: 800;
+      color: #0f172a;
+      border-left: 3.5pt solid #0284c7;
+      padding-left: 7pt;
+      margin-top: 16pt;
+      margin-bottom: 8pt;
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #0369a1;
+      margin-top: 10pt;
+      margin-bottom: 4pt;
+      page-break-after: avoid;
+    }
+
+    p {
+      margin-bottom: 7pt;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-left: 16pt;
+      margin-bottom: 8pt;
+    }
+
+    li {
+      margin-bottom: 3.5pt;
+    }
+
+    /* Code & Technical Blocks */
+    code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 9pt;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 1.5pt 4pt;
+      border-radius: 3pt;
+      border: 1px solid #e2e8f0;
+    }
+
+    .endpoint-card {
+      background-color: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 5pt;
+      padding: 8pt 10pt;
+      margin-bottom: 8pt;
+      font-size: 9pt;
+      page-break-inside: avoid;
+    }
+
+    .endpoint-title {
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 3pt;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .endpoint-url {
+      font-family: 'Consolas', monospace;
+      color: #0369a1;
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6pt;
+      margin-bottom: 10pt;
+      font-size: 8.5pt;
+      page-break-inside: avoid;
+    }
+
+    th {
+      background-color: #0f172a;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: left;
+      padding: 5pt 7pt;
+      border: 1px solid #0f172a;
+    }
+
+    td {
+      padding: 4.5pt 7pt;
+      border: 1px solid #cbd5e1;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+
+    /* Highlight box */
+    .callout {
+      background-color: #eff6ff;
+      border-left: 3pt solid #3b82f6;
+      padding: 7pt 9pt;
+      margin: 8pt 0;
+      border-radius: 0 4pt 4pt 0;
+      font-size: 9pt;
+      page-break-inside: avoid;
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: #1d4ed8;
+      margin-bottom: 2pt;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    .footer-note {
+      margin-top: 20pt;
+      border-top: 1px solid #cbd5e1;
+      padding-top: 8pt;
+      font-size: 8pt;
+      color: #64748b;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header-box">
+    <span class="badge-doc">Spesifikasi Arsitektur Sistem &amp; API</span>
+    <h1>Portal Tsunami Indonesia</h1>
+    <div class="subtitle">Dokumentasi Integrasi API, Penanganan Potensi Tsunami, dan Arsitektur Framework</div>
+    <div class="meta-grid">
+      <div class="meta-item"><strong>Status:</strong> Terverifikasi Produksi</div>
+      <div class="meta-item"><strong>Versi Sistem:</strong> 1.0.0 (Release)</div>
+      <div class="meta-item"><strong>Tanggal:</strong> 26 November 2026</div>
+      <div class="meta-item"><strong>Lisensi:</strong> MIT Open Source</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <h2>1. Ringkasan Eksekutif</h2>
+  <p>
+    Sistem <strong>Tsunami Indonesia</strong> adalah portal pemantauan kebencanaan geospasial dan edukasi mitigasi publik yang dirancang untuk menyajikan data gempa bumi terkini serta rekam jejak kejadian tsunami historis di wilayah Indonesia dan Samudera Pasifik. Platform ini menggabungkan layanan API resmi nasional (BMKG InaTEWS) dan internasional (NOAA NCEI Global Hazard Service) melalui arsitektur berorientasi performa tinggi, bebas ketergantungan pihak ketiga (<em>zero-dependency</em>), dan tangguh diakses dalam kondisi darurat jaringan pesisir.
+  </p>
+
+  <!-- SECTION 2 -->
+  <h2>2. Integrasi Layanan API (Application Programming Interface)</h2>
+  <p>
+    Platform mengintegrasikan tiga ekosistem API utama untuk menyediakan pemantauan langsung (<em>live monitoring</em>), basis data historis, serta visualisasi peta dasar:
+  </p>
+
+  <div class="endpoint-card">
+    <div class="endpoint-title">
+      <span>1. BMKG InaTEWS Open Data Autogempa</span>
+      <span>Metode: GET (JSON)</span>
+    </div>
+    <div class="endpoint-url">https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json</div>
+    <p style="margin-top: 4pt; margin-bottom: 0;">
+      <strong>Fungsi:</strong> Mengambil informasi gempa bumi mutakhir Indonesia secara otomatis setiap ada pembaruan sensor BMKG. Parameter mencakup Magnitudo (M), Kedalaman (km), Wilayah Episentrum, Koordinat Lintang/Bujur, Tanggal, Jam WIB, dan Keterangan Status Potensi Tsunami.
+    </p>
+  </div>
+
+  <div class="endpoint-card">
+    <div class="endpoint-title">
+      <span>2. NOAA NCEI Tsunami Hazard Service REST API</span>
+      <span>Metode: GET (JSON)</span>
+    </div>
+    <div class="endpoint-url">https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/tsunamis/events?country=INDONESIA&amp;minYear=1900</div>
+    <p style="margin-top: 4pt; margin-bottom: 0;">
+      <strong>Fungsi:</strong> Mengambil arsip saintifik kejadian tsunami laut dari tahun 1900 hingga sekarang. Mengembalikan ketinggian hempasan maksimum (<em>max water height</em>), kode penyebab (tektonik, erupsi vulkanik, longsoran bawah laut), koordinat asal, dan korban jiwa terverifikasi.
+    </p>
+  </div>
+
+  <div class="endpoint-card">
+    <div class="endpoint-title">
+      <span>3. Esri ArcGIS REST Map Tile Service</span>
+      <span>Format: Slippy Map Tiles (XYZ)</span>
+    </div>
+    <div class="endpoint-url">https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}</div>
+    <p style="margin-top: 4pt; margin-bottom: 0;">
+      <strong>Fungsi:</strong> Menyediakan basemap peta topografi alami dan batimetri kedalaman laut dunia dengan kontras tinggi, bebas watermark komersial, serta layer pelengkap seperti World Street Map dan World Imagery (citra satelit).
+    </p>
+  </div>
+
+  <div class="endpoint-card">
+    <div class="endpoint-title">
+      <span>4. Reverse Proxy Lokal &amp; Serverless Edge (/api/bmkg &amp; /api/noaa)</span>
+      <span>Arsitektur Internal</span>
+    </div>
+    <div class="endpoint-url">/api/bmkg &nbsp;|&nbsp; /api/noaa</div>
+    <p style="margin-top: 4pt; margin-bottom: 0;">
+      <strong>Fungsi:</strong> Menangani pembatasan CORS (Cross-Origin Resource Sharing) browser, menginjeksi header keamanan, serta menerapkan mekanisme cache in-memory (<code>s-maxage=60, stale-while-revalidate=120</code>) untuk menjaga stabilitas kueri dan menghemat kuota transmisi data.
+    </p>
+  </div>
+
+  <!-- SECTION 3 -->
+  <h2>3. Standar Evaluasi Potensi Tsunami &amp; Estimasi Tinggi Gelombang</h2>
+  <p>
+    Berdasarkan Standar Operasional Prosedur (SOP) BMKG InaTEWS, sistem menjalankan fungsi analisis <code>evaluateBmkgTsunamiPotential(gempa)</code> pada modul <code>js/api.js</code> untuk mengevaluasi data mentah menjadi indikator keselamatan yang dapat dipahami masyarakat umum:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 14%;">Tingkat Peringatan</th>
+        <th style="width: 26%;">Ambang Parameter Gempa</th>
+        <th style="width: 20%;">Estimasi Gelombang</th>
+        <th style="width: 20%;">Status Potensi</th>
+        <th style="width: 20%;">Instruksi Tindakan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong style="color: #dc2626;">AWAS</strong></td>
+        <td>Teks BMKG memuat 'AWAS' atau Magnitudo M &ge; 7.8 (dangkal &le; 70 km di laut)</td>
+        <td><strong>&gt; 3.0 meter</strong><br><span style="color: #64748b;">(Bahaya Bencana Besar)</span></td>
+        <td>Berpotensi Tsunami (Tingkat Tinggi)</td>
+        <td>Evakuasi menyeluruh warga pesisir ke dataran tinggi segera.</td>
+      </tr>
+      <tr>
+        <td><strong style="color: #d97706;">SIAGA</strong></td>
+        <td>Teks BMKG memuat 'SIAGA' atau 7.0 &le; M &lt; 7.8 (dangkal &le; 70 km di laut)</td>
+        <td><strong>0.5 – 3.0 meter</strong><br><span style="color: #64748b;">(Bahaya Sedang)</span></td>
+        <td>Berpotensi Tsunami (Tingkat Sedang)</td>
+        <td>Evakuasi warga dari sempadan pantai dan muara sungai.</td>
+      </tr>
+      <tr>
+        <td><strong style="color: #0284c7;">WASPADA</strong></td>
+        <td>Teks BMKG memuat 'WASPADA' atau 6.5 &le; M &lt; 7.0 (dangkal &le; 70 km di laut)</td>
+        <td><strong>&lt; 0.5 meter</strong><br><span style="color: #64748b;">(Bahaya Minor)</span></td>
+        <td>Waspada Potensi Tsunami</td>
+        <td>Jauhi pantai dan tepian sungai. Waspadai arus laut kuat.</td>
+      </tr>
+      <tr>
+        <td><strong style="color: #16a34a;">NORMAL</strong></td>
+        <td>Keterangan BMKG 'Tidak berpotensi tsunami', gempa darat, atau M &lt; 6.5</td>
+        <td><strong>0 meter</strong><br><span style="color: #64748b;">(Permukaan Laut Normal)</span></td>
+        <td>Tidak Berpotensi Tsunami</td>
+        <td>Kondisi perairan laut pesisir aman dan normal.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PAGE BREAK -->
+  <div class="page-break"></div>
+
+  <!-- SECTION 4 -->
+  <h2>4. Spesifikasi Framework, Library, dan Arsitektur Perangkat Lunak</h2>
+  <p>
+    Arsitektur perangkat lunak dirancang dengan prinsip <em>Zero Heavy Frameworks</em> demi menjamin efisiensi performa eksekusi, interoperabilitas tinggi, serta pemeliharaan kode yang terstruktur:
+  </p>
+
+  <h3>A. Frontend Engine: Vanilla JavaScript (Native ES6+)</h3>
+  <ul>
+    <li><strong>Pendekatan:</strong> Bebas dari framework frontend berat (seperti React, Vue, atau Angular). Murni menggunakan standar ECMAScript 6+ native browser.</li>
+    <li><strong>Keunggulan:</strong>
+      <ul>
+        <li><strong>Nol Overhead Virtual DOM:</strong> Manipulasi DOM dilakukan secara presisi pada elemen yang dibutuhkan tanpa proses rekonsiliasi berlebih.</li>
+        <li><strong>Waktu Muat Instan:</strong> Ukuran transfer file JavaScript total hanya &plusmn; 35 KB, memungkinkan situs termuat dalam hitungan milidetik bahkan pada koneksi seluler 3G/darurat.</li>
+        <li><strong>Bebas Proses Build:</strong> Kode berjalan langsung tanpa membutuhkan kompilasi bundler seperti Webpack, Vite, atau Rollup.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>B. CSS &amp; Antarmuka Pengguna: Tailwind CSS + Custom CSS</h3>
+  <ul>
+    <li><strong>Tailwind CSS (via CDN):</strong> Digunakan untuk utility classes perancangan tata letak fleksibel (flexbox, CSS grid, breakpoints responsif mobile hingga desktop, dan utility spacing).</li>
+    <li><strong>Custom Stylesheet (<code>css/style.css</code>):</strong>
+      Mengatur identitas visual <em>Deep Oceanic Dark Navy</em>:
+      <ul>
+        <li>Palet Warna Utama: Navy gelap kontras (<code>#0b1329</code>, <code>#0f172a</code>, <code>#1e293b</code>) dengan aksen Cyan/Sky Blue (<code>#38bdf8</code>) dan Emergency Red (<code>#dc2626</code>).</li>
+        <li>Komponen Kustom: Kartu transparan backdrop blur (<code>ele-card</code>), tombol aksi tegas (<code>ele-btn-primary</code>, <code>ele-btn-secondary</code>), serta styling popup Leaflet gelap (<code>ele-leaflet-popup</code>).</li>
+        <li>Standar Tipografi: Menggunakan font sans-serif modern Inter dari Google Fonts dengan hierarki kontras yang mudah dibaca.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>C. Engine Pemetaan Geospasial: Leaflet.js (v1.9.4)</h3>
+  <ul>
+    <li><strong>Library Peta:</strong> Leaflet.js versi 1.9.4 (diakses melalui jaringan CDN unpkg resmi).</li>
+    <li><strong>Fitur Geospasial yang Diimplementasikan:</strong>
+      <ul>
+        <li>Penyajian koordinat kartografis dan konversi derajat geografis (Lat/Lng).</li>
+        <li>Render layer interaktif: <code>L.circleMarker</code> untuk arsip tsunami historis dan <code>L.divIcon</code> berdenyut (<em>pulsing marker</em>) untuk episentrum gempa BMKG live.</li>
+        <li>Manajemen layer kontrol untuk perpindahan basemap (Topografi, Wilayah, Satelit) dan legenda klasifikasi tinggi gelombang laut.</li>
+        <li>Fitur navigasi kamera (<code>flyTo</code>) otomatis saat pengguna meninjau titik gempa atau memilih kartu peristiwa tsunami.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>D. Backend Runtime: Native Node.js &amp; Vercel Serverless Ready</h3>
+  <ul>
+    <li><strong>Runtime Lokal (<code>local-server.js</code>):</strong> Dibangun menggunakan modul bawaan native Node.js tanpa dependensi npm pihak ketiga (<code>dependencies: {}</code> di <code>package.json</code>).
+      <ul>
+        <li>Modul <code>http</code> &amp; <code>https</code>: Mengelola web server dan proxy API luar.</li>
+        <li>Modul <code>fs</code> &amp; <code>path</code>: Mengalirkan file statis dengan penentuan tipe MIME yang tepat serta mendukung <em>Clean URLs</em> (misal: <code>/peta</code> otomatis memuat <code>/peta.html</code>).</li>
+      </ul>
+    </li>
+    <li><strong>Kompatibilitas Serverless (<code>api/bmkg.js</code> &amp; <code>api/noaa.js</code>):</strong> Berformat fungsi serverless standar Vercel Node.js Serverless Function yang siap dideploy ke cloud secara global tanpa konfigurasi server fisik.</li>
+  </ul>
+
+  <div class="callout">
+    <div class="callout-title">Keamanan &amp; Stabilitas Bebas Dependensi Eksternal (Zero Dependencies)</div>
+    Dengan 0 dependensi eksternal pada <code>package.json</code>, sistem kebal terhadap risiko kerentanan keamanan rantai pasok (<em>supply-chain vulnerabilities</em>), tidak membutuhkan instalasi ribet (<code>npm install</code>), dan menjamin keberlanjutan kode dalam jangka panjang tanpa risiko pustaka kadaluwarsa (*deprecated*).
+  </div>
+
+  <!-- SECTION 5 -->
+  <h2>5. Rangkuman Matriks Spesifikasi Teknis</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Komponen Sistem</th>
+        <th style="width: 30%;">Teknologi / Layanan</th>
+        <th style="width: 20%;">Versi / Sumber</th>
+        <th style="width: 25%;">Peran Utama</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Bahasa Pemrograman</strong></td>
+        <td>JavaScript (ES6+) Native</td>
+        <td>Standard ECMAScript</td>
+        <td>Logika interaktivitas dan manipulasi data</td>
+      </tr>
+      <tr>
+        <td><strong>Frontend Framework</strong></td>
+        <td>Vanilla Architecture</td>
+        <td>Zero Framework</td>
+        <td>Performa ringan, muat instan tanpa kompilasi</td>
+      </tr>
+      <tr>
+        <td><strong>CSS Framework</strong></td>
+        <td>Tailwind CSS</td>
+        <td>CDN JIT Standalone</td>
+        <td>Tata letak responsif dan utilitas antarmuka</td>
+      </tr>
+      <tr>
+        <td><strong>Library Pemetaan</strong></td>
+        <td>Leaflet.js</td>
+        <td>v1.9.4</td>
+        <td>Rendering peta interaktif dan geolokasi</td>
+      </tr>
+      <tr>
+        <td><strong>Penyedia Peta Dasar</strong></td>
+        <td>Esri ArcGIS Online</td>
+        <td>REST Tile Service</td>
+        <td>Tile batimetri samudera dan topografi bumi</td>
+      </tr>
+      <tr>
+        <td><strong>API Gempa Terkini</strong></td>
+        <td>BMKG Open Data TEWS</td>
+        <td>autogempa.json</td>
+        <td>Pemantauan gempa bumi dan potensi tsunami</td>
+      </tr>
+      <tr>
+        <td><strong>API Arsip Tsunami</strong></td>
+        <td>NOAA NCEI Hazard API</td>
+        <td>REST JSON API</td>
+        <td>Basis data historis tsunami 1900–sekarang</td>
+      </tr>
+      <tr>
+        <td><strong>Backend Runtime</strong></td>
+        <td>Node.js Built-in Core</td>
+        <td>v18+ Standard Library</td>
+        <td>Penyaji statis, Clean URLs, dan proxy API</td>
+      </tr>
+      <tr>
+        <td><strong>Deployment Cloud</strong></td>
+        <td>Vercel Serverless Platform</td>
+        <td>Node.js Edge / Serverless</td>
+        <td>Hosting global berlatensi rendah</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer-note">
+    Dokumen ini digenerate secara resmi untuk repositori <strong>Tsunami-Web</strong> (&copy; 2026 Tim Pengembang Tsunami Indonesia).
+  </div>
+
+</body>
+</html>

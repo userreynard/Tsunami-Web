@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3.5 sm:gap-4">
         <div class="flex items-start sm:items-center gap-3 sm:gap-4 flex-1 min-w-0">
           <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${evalResult.isPotential ? 'bg-red-950/90 text-red-400 border border-red-500 shadow-md shadow-red-950/50' : 'bg-blue-950/80 text-sky-400 border border-blue-700'} flex items-center justify-center shrink-0 shadow-sm">
-            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path></svg>
           </div>
           <div class="flex-1 min-w-0">
             <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
