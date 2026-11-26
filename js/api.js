@@ -1,8 +1,8 @@
 /**
- * ============================================================================
+ 
  * Tsunami Indonesia - API Integration Service
- * ============================================================================
- * Modul ini menangani pemanggilan API gratis untuk data tsunami & gempa:
+
+ *
  * 1. NOAA NCEI Hazard API (Data Tsunami Global & Indonesia)
  * 2. BMKG Open Data TEWS (Gempa Terkini & Potensi Tsunami Indonesia)
  * 3. Fallback Dataset Terpadu (memastikan website selalu berjalan instan & offline)

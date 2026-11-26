@@ -1,8 +1,7 @@
 /**
- * ============================================================================
+
  * Tsunami Indonesia - Main Application Logic (Multi-Page Ready)
- * Tema: Biru Cerah & Putih Solid (Bebas Transparansi Murky, Human-Crafted)
- * ============================================================================
+=
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -191,11 +190,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   regionFilters.forEach(btn => {
     btn.addEventListener('click', () => {
       regionFilters.forEach(b => {
-        b.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
-        b.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+        b.classList.remove('active');
+        b.removeAttribute('data-active');
       });
-      btn.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
-      btn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+      btn.classList.add('active');
+      btn.setAttribute('data-active', 'true');
 
       state.activeRegionFilter = btn.dataset.region || 'all';
       applyFilterAndSearch();

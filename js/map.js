@@ -198,7 +198,7 @@ class TsunamiMapController {
           </div>
 
           <button onclick="window.appShowDetailModal('${event.id}')" 
-                  class="w-full py-2 px-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-sm cursor-pointer">
+                  class="ele-btn ele-btn-primary w-full py-2 px-3 text-xs font-bold gap-1.5 min-h-[38px] shadow-md shadow-blue-900/40 hover:-translate-y-0.5 cursor-pointer">
             <span>Rincian Kejadian</span>
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
           </button>

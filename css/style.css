@@ -89,45 +89,110 @@ body {
   transform: translateY(-2px);
 }
 
-/* Buttons */
+/* ==========================================
+   BUTTON SYSTEM (HIGH CONTRAST, OCEANIC & VIBRANT)
+   ========================================== */
+
 .ele-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 0.625rem;
   padding: 0.55rem 1.15rem;
   font-size: 0.8125rem;
   min-height: 42px;
   touch-action: manipulation;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.ele-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Primary Action: Ocean Blue Gradient */
+.ele-btn-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff !important;
+  border: 1px solid #3b82f6;
+  box-shadow: 0 2px 6px -1px rgba(37, 99, 235, 0.45), 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.ele-btn-primary:hover {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-color: #60a5fa;
+  color: #ffffff !important;
+  box-shadow: 0 6px 20px -3px rgba(37, 99, 235, 0.55), 0 2px 6px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1.5px);
+}
+
+/* Secondary Action: Deep Slate Navy with Sky Hover */
+.ele-btn-secondary {
+  background: #1e293b;
+  color: #f1f5f9 !important;
+  border: 1px solid #3b4c68;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.ele-btn-secondary:hover {
+  background: #27354f;
+  border-color: #38bdf8;
+  color: #38bdf8 !important;
+  box-shadow: 0 6px 18px -3px rgba(56, 189, 248, 0.25);
+  transform: translateY(-1.5px);
+}
+
+/* Emergency Button: High-Alert Crimson */
+.ele-btn-emergency {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: #ffffff !important;
+  border: 1px solid #ef4444;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+}
+
+.ele-btn-emergency:hover {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border-color: #f87171;
+  color: #ffffff !important;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.55);
+  transform: translateY(-1.5px);
+}
+
+/* Filter Toolbar Buttons */
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border-radius: 0.625rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  min-height: 38px;
+  background-color: #111c33;
+  color: #cbd5e1;
+  border: 1px solid #2e3e5c;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   user-select: none;
 }
 
-.ele-btn-primary {
-  background-color: #2563eb;
-  color: #ffffff;
-  border: 1px solid #3b82f6;
-  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
-}
-
-.ele-btn-primary:hover {
-  background-color: #1d4ed8;
-  border-color: #60a5fa;
-  color: #ffffff;
-}
-
-.ele-btn-secondary {
-  background-color: #1e293b;
-  color: #f8fafc;
-  border: 1px solid #334155;
-}
-
-.ele-btn-secondary:hover {
-  background-color: #334155;
+.filter-btn:hover {
+  background-color: #1a2947;
   border-color: #38bdf8;
-  color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+  transform: translateY(-1px);
+}
+
+.filter-btn.active, .filter-btn[data-active="true"] {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  color: #ffffff !important;
+  border-color: #60a5fa !important;
+  box-shadow: 0 3px 12px rgba(37, 99, 235, 0.45);
 }
 
 /* Input Fields */
