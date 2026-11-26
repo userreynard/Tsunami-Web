@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const statTotalEvents = document.getElementById('stat-total-events');
   const statIndonesiaEvents = document.getElementById('stat-indonesia-events');
   const statMaxWave = document.getElementById('stat-max-wave');
-  const statLatestYear = document.getElementById('stat-latest-year');
 
   // ==========================================
   // 3. PENGAMBILAN DATA (API LIVE & CACHED)
@@ -81,17 +80,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 4. PERHITUNGAN STATISTIK
   // ==========================================
   function updateStatistics() {
-    if (!statTotalEvents && !statIndonesiaEvents && !statMaxWave && !statLatestYear) return;
+    if (!statTotalEvents && !statIndonesiaEvents && !statMaxWave) return;
 
     const total = state.events.length;
     const indoEvents = state.events.filter(e => e.isIndonesia);
-    const newestYear = state.events.length > 0 ? state.events[0].year : '2026';
 
     if (statTotalEvents) statTotalEvents.textContent = total.toLocaleString('id-ID');
     if (statIndonesiaEvents) statIndonesiaEvents.textContent = indoEvents.length.toLocaleString('id-ID');
     // Rekor gelombang tertinggi di Indonesia adalah letusan Anak Krakatau 2018 (85 meter di tebing Pulau Rakata)
     if (statMaxWave) statMaxWave.textContent = '85 m (Krakatau 2018)';
-    if (statLatestYear) statLatestYear.textContent = newestYear;
   }
 
   // ==========================================
